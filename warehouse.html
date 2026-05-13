@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>RequiSite</title>
+  <title>Warehouse Management System</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -23,18 +23,60 @@
       --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
     }
 
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif; background: var(--gray-bg); color: var(--text); min-height: 100vh; letter-spacing: -0.01em; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif; background: linear-gradient(135deg, #dce8f5 0%, #c8dff2 50%, #d8e9f7 100%); color: var(--text); min-height: 100vh; letter-spacing: -0.01em; }
 
     /* LOGIN */
     #login-page {
       display: flex; align-items: center; justify-content: center;
       min-height: 100vh;
       background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+      position: relative;
+      overflow: hidden;
     }
+    #login-page::before, #login-page::after {
+      content: '';
+      position: absolute;
+      border-radius: 999px;
+      pointer-events: none;
+      filter: blur(2px);
+    }
+    #login-page::before {
+      width: 320px; height: 320px; left: -90px; top: 10%;
+      background: radial-gradient(circle, rgba(255,255,255,.28) 0%, rgba(255,255,255,.06) 55%, transparent 72%);
+      opacity: .85;
+    }
+    #login-page::after {
+      width: 260px; height: 260px; right: -70px; bottom: 8%;
+      background: radial-gradient(circle, rgba(255,255,255,.22) 0%, rgba(255,255,255,.05) 58%, transparent 74%);
+      opacity: .8;
+    }
+    .splash-screen {
+      position: fixed; inset: 0; z-index: 20;
+      background: linear-gradient(135deg, #dce8f5 0%, #c8dff2 50%, #d8e9f7 100%);
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity .55s ease, visibility .55s ease;
+    }
+    .splash-screen-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .splash-brand { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; animation: splashIntro .7s cubic-bezier(.2,.8,.2,1); }
+    .splash-logo {
+      width: 76px; height: 76px; background: rgba(255,255,255,.92); border: 1px solid rgba(16,185,129,.18);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 22px rgba(16,185,129,.14);
+      padding: 10px; overflow: hidden; animation: splashLogo .7s cubic-bezier(.2,.8,.2,1);
+    }
+    .splash-logo img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; transform: scale(.96); }
+    .splash-title { font-size: 28px; font-weight: 800; letter-spacing: .05em; color: #111; margin-left: .05em; white-space: nowrap; line-height: 1.12; animation: splashTitle .7s cubic-bezier(.2,.8,.2,1) .04s both; }
+    .splash-subtitle { font-size: 13px; color: #4b5563; letter-spacing: .08em; animation: splashSub .7s cubic-bezier(.2,.8,.2,1) .08s both; }
+    @keyframes splashIntro { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes splashLogo { from { opacity: 0; transform: translateY(6px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes splashTitle { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes splashSub { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
     .login-card {
       background: var(--white); border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.15);
       padding: 48px 52px 44px; width: 440px; text-align: center; backdrop-filter: blur(10px);
+      opacity: 1; transform: translateY(0); transition: opacity .5s ease, transform .5s ease;
     }
+    .login-card-hidden { opacity: 0; transform: translateY(12px) scale(.99); }
+    .login-card-visible { opacity: 1; transform: translateY(0) scale(1); }
     .login-icon {
       width: 64px; height: 64px; background: linear-gradient(135deg, var(--green), var(--green-dark)); border-radius: 50%;
       display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);
@@ -97,9 +139,73 @@
     .page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 32px; }
     .page-header h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
     .page-header p { color: var(--text-muted); font-size: 14px; }
+    .page-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+    .view-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px;
+      height: 40px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+    }
+    .view-toggle-btn {
+      position: relative;
+      width: 40px;
+      height: 32px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: #475569;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s ease;
+    }
+    .view-toggle-btn:hover { background: #f1f5f9; }
+    .view-toggle-btn.active { background: var(--blue); color: #fff; box-shadow: 0 6px 14px rgba(59,130,246,.25); }
+    .view-toggle-btn svg { width: 18px; height: 18px; }
+    .view-toggle-btn::after {
+      content: attr(data-label);
+      position: absolute;
+      left: 50%;
+      top: calc(100% + 8px);
+      transform: translateX(-50%) translateY(-2px);
+      background: #0f172a;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1;
+      padding: 7px 10px;
+      border-radius: 8px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .15s ease, transform .15s ease;
+      z-index: 20;
+    }
+    .view-toggle-btn:hover::after, .view-toggle-btn:focus-visible::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .sort-control {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 3px 10px;
+      height: 40px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+    }
+    .sort-label { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 32px; border: none; border-radius: 8px; background: #f8fafc; color: #475569; cursor: pointer; }
+    .sort-label:hover { background: #f1f5f9; }
+    .sort-label svg { width: 16px; height: 16px; }
+    .sort-select { border: none; background: transparent; color: #0f172a; font-size: 13px; font-weight: 600; outline: none; min-width: 142px; cursor: pointer; }
     .filter-btn {
-      display: flex; align-items: center; gap: 8px; background: var(--white);
-      border: 1px solid var(--border); border-radius: 10px; padding: 11px 20px;
+      display: flex; align-items: center; gap: 8px; height: 40px; background: var(--white);
+      border: 1px solid var(--border); border-radius: 10px; padding: 0 16px;
       font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.3s ease; box-shadow: var(--shadow);
     }
     .filter-btn:hover { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
@@ -125,9 +231,7 @@
 
     .card-title-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
     .card-title { font-size: 17px; font-weight: 700; }
-    .badge { padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
-    .badge-urgent { background: #ffe0e0; color: var(--red); }
-    .badge-doable { background: #f3f4f6; color: #6b7280; border: 1px solid #d1d5db; }
+    .badge { padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }\n    .badge-urgent { background: #ffe0e0; color: var(--red); }\n    .badge-doable { background: #f3f4f6; color: #6b7280; border: 1px solid #d1d5db; }
 
     .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; margin-bottom: 14px; }
     .card-field label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 3px; }
@@ -143,10 +247,10 @@
 
     .status-label { font-size: 12px; color: var(--text-muted); text-align: right; }
     .status-badge { padding: 5px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1px solid transparent; }
-    .status-approved { background: #e8f5e9; color: #2e7d32; border-color: #a5d6a7; }
-    .status-processing { background: #e3f0ff; color: var(--blue); border-color: #90caf9; }
-    .status-completed { border-color: #ccc; color: #444; }
-    .status-pending { background: var(--yellow-light); color: #e65100; border-color: #ffe082; }
+    .status-MaterialsOutOfStock { background: #e8f5e9; color: #2e7d32; border-color: #a5d6a7; }
+    .status-OrderingMaterials { background: #e3f0ff; color: var(--blue); border-color: #90caf9; }
+    .status-MaterialInStock { border-color: #ccc; color: #444; }
+    .status-InProcess { background: var(--yellow-light); color: #e65100; border-color: #ffe082; }
 
     .update-btn {
       display: flex; align-items: center; gap: 7px; background: linear-gradient(135deg, var(--green), var(--green-dark)); color: white;
@@ -155,19 +259,31 @@
     .update-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4); }
     .update-btn svg { width: 15px; height: 15px; }
 
-    .view-switcher { display: flex; justify-content: flex-end; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 22px; }
-    .view-switcher .toggle-btn { padding: 10px 18px; border-radius: 10px; font-size: 14px; background: white; }
-    .view-switcher .toggle-btn.active { background: var(--green); color: white; border-color: var(--green); box-shadow: 0 6px 18px rgba(16, 185, 129, 0.22); }
-    .hidden { display: none !important; }
-    .request-table { background: var(--white); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; margin-top: 22px; }
-    .table-scroll { overflow-x: auto; }
-    .request-table-element { width: 100%; min-width: 980px; border-collapse: collapse; }
-    .request-table-element th, .request-table-element td { padding: 16px 14px; border-bottom: 1px solid #e5e7eb; vertical-align: top; font-size: 13px; color: var(--text); }
-    .request-table-element th { background: #f8fafc; font-weight: 700; text-align: left; color: var(--text-muted); }
-    .request-table-element tbody tr:hover { background: #f9fafb; }
-    .request-table-element td .status-badge { display: inline-flex; vertical-align: middle; }
-    .request-table-element td .action-btn { white-space: nowrap; }
-    .action-btn { border: none; background: linear-gradient(135deg, var(--green), var(--green-dark)); color: white; border-radius: 10px; padding: 8px 14px; cursor: pointer; font-size: 12px; font-weight: 700; }
+    .table-view-container { display: none; background: var(--white); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; }
+    .dashboard-table-wrap { overflow-x: auto; }
+    .dashboard-table { width: 100%; border-collapse: collapse; min-width: 960px; }
+    .dashboard-table th, .dashboard-table td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #eef2f7; font-size: 13px; }
+    .dashboard-table th { font-size: 12px; color: var(--text-muted); font-weight: 700; letter-spacing: .04em; text-transform: uppercase; background: #f8fafc; }
+    .dashboard-table td { color: #1f2937; }
+    .dashboard-table tr:hover td { background: #f9fbff; }
+    .table-priority-urgent { color: #b91c1c; font-weight: 700; }
+    .table-priority-standard { color: #475569; font-weight: 600; }
+    .status-chip { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 999px; border: 1px solid transparent; font-size: 12px; font-weight: 700; }
+    .status-chip-btn {
+      border: none;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      font: inherit;
+    }
+    .status-chip-btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 999px; }
+    .status-chip.status-MaterialsOutOfStock { background: #e8f5e9; color: #2e7d32; border-color: #a5d6a7; }
+    .status-chip.status-OrderingMaterials { background: #e3f0ff; color: var(--blue); border-color: #90caf9; }
+    .status-chip.status-MaterialInStock { background: #f3f4f6; color: #444; border-color: #ccc; }
+    .status-chip.status-InProcess { background: var(--yellow-light); color: #e65100; border-color: #ffe082; }
+    #dashboard-page.dashboard-table-view .section-header,
+    #dashboard-page.dashboard-table-view .request-card { display: none; }
+    #dashboard-page.dashboard-table-view .table-view-container { display: block; }
 
     /* MODAL */
     .modal-overlay {
@@ -273,21 +389,21 @@
     }
     
     /* Status option color themes */
-    .status-option[data-status="Pending"] { background: #fffce3; }
-    .status-option[data-status="Pending"]:hover { background: #fffbcc; }
-    .status-option[data-status="Pending"].selected { border-color: #f9a825; background: #fffbcc; }
+    .status-option[data-status="In-Process"] { background: #fffce3; }
+    .status-option[data-status="In-Process"]:hover { background: #fffbcc; }
+    .status-option[data-status="In-Process"].selected { border-color: #f9a825; background: #fffbcc; }
     
-    .status-option[data-status="Approved"] { background: #e8f5e9; }
-    .status-option[data-status="Approved"]:hover { background: #dcefd9; }
-    .status-option[data-status="Approved"].selected { border-color: #2e9e3e; background: #dcefd9; }
+    .status-option[data-status="Materials Out-of-Stock"] { background: #e8f5e9; }
+    .status-option[data-status="Materials Out-of-Stock"]:hover { background: #dcefd9; }
+    .status-option[data-status="Materials Out-of-Stock"].selected { border-color: #2e9e3e; background: #dcefd9; }
     
-    .status-option[data-status="Processing"] { background: #e3f0ff; }
-    .status-option[data-status="Processing"]:hover { background: #cce5ff; }
-    .status-option[data-status="Processing"].selected { border-color: #1565c0; background: #cce5ff; }
+    .status-option[data-status="Ordering Materials"] { background: #e3f0ff; }
+    .status-option[data-status="Ordering Materials"]:hover { background: #cce5ff; }
+    .status-option[data-status="Ordering Materials"].selected { border-color: #1565c0; background: #cce5ff; }
     
-    .status-option[data-status="Completed"] { background: #f0f0f0; }
-    .status-option[data-status="Completed"]:hover { background: #e8e8e8; }
-    .status-option[data-status="Completed"].selected { border-color: #666; background: #e8e8e8; }
+    .status-option[data-status="Material In-Stock"] { background: #f0f0f0; }
+    .status-option[data-status="Material In-Stock"]:hover { background: #e8e8e8; }
+    .status-option[data-status="Material In-Stock"].selected { border-color: #666; background: #e8e8e8; }
 
     .info-box {
       background: #e3f0ff; border: 1px solid #90caf9; border-radius: 10px;
@@ -406,18 +522,39 @@
       border: 1px solid var(--border); border-radius: 10px;
       padding: 20px; font-size: 14px; line-height: 1.7; color: var(--text);
     }
+
+    @media (max-width: 960px) {
+      .page-header { flex-direction: column; gap: 14px; align-items: stretch; }
+      .page-actions { justify-content: flex-start; }
+    }
+    @media (max-width: 740px) {
+      .page-actions { width: 100%; }
+      .view-toggle { width: 100%; justify-content: space-between; }
+      .view-toggle-btn { flex: 1 1 0; }
+      .sort-control { width: 100%; }
+      .sort-select { width: 100%; min-width: 0; }
+    }
   </style>
 </head>
 <body>
 
 <!-- LOGIN -->
 <div id="login-page">
-  <div class="login-card">
-    <div class="login-icon">
-      <img src="logo-vtlc.jpg" alt="VTLC Logo" onerror="this.style.display='none';this.parentNode.innerHTML='<svg viewBox=\'0 0 24 24\'><path d=\'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5\'/></svg>'"/>
+  <div id="splash-screen" class="splash-screen" aria-hidden="true">
+    <div class="splash-brand">
+      <div class="splash-logo">
+        <img src="logo-vtlc.jpg" alt="VTLC Logo" />
+      </div>
+      <h1 class="splash-title">Vicente T. Lao Construction</h1>
+      <p class="splash-subtitle">Warehouse Management System</p>
     </div>
-    <h1>RequiSite</h1>
-    <p>Motorpool-Warehouse Material Requisition System</p>
+  </div>
+  <div class="login-card login-card-hidden" id="login-card">
+    <div class="login-icon">
+      <img src="logo-vtlc.jpg" alt="VTLC Logo" />
+    </div>
+    <h1>Warehouse Management System</h1>
+    <p>Enter password to access dashboard</p>
     <div id="login-error" class="login-error">Incorrect password. Try again.</div>
     <label class="form-label" for="pw-input">Password</label>
     <input id="pw-input" class="form-input" type="password" placeholder="Enter password" />
@@ -431,7 +568,7 @@
   <header class="header">
     <div class="header-left">
       <div class="header-logo">
-        <img src="logo-vtlc.jpg" alt="VTLC Logo" onerror="this.style.display='none'"/>
+        <img src="logo-vtlc.jpg" alt="VTLC Logo" />
       </div>
       <div class="header-title">
         <h2>Warehouse Dashboard</h2>
@@ -463,244 +600,253 @@
         <h1>Material Requests</h1>
         <p>Manage material requisitions from motorpool</p>
       </div>
-      <button class="filter-btn" onclick="openFilter()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-        Filter
-      </button>
-    </div>
-    <div class="view-switcher">
-      <button class="toggle-btn active" id="cards-view-btn" onclick="switchRequestView('cards')" aria-label="Cards view">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
-          <rect x="3" y="3" width="7" height="7" rx="2" />
-          <rect x="14" y="3" width="7" height="7" rx="2" />
-          <rect x="3" y="14" width="7" height="7" rx="2" />
-          <rect x="14" y="14" width="7" height="7" rx="2" />
-        </svg>
-      </button>
-      <button class="toggle-btn" id="table-view-btn" onclick="switchRequestView('table')" aria-label="Table view">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
-          <path d="M3 6h18" />
-          <path d="M3 12h18" />
-          <path d="M3 18h18" />
-          <path d="M8 3v18" />
-          <path d="M16 3v18" />
-        </svg>
-      </button>
-    </div>
-
-    <div id="cards-view">
-      <div class="request-group" id="urgent-group">
-        <!-- URGENT -->
-        <div class="section-header urgent">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-            <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-          </svg>
-          Urgent Material Requests (3)
+      <div class="page-actions">
+        <div class="view-toggle" role="tablist" aria-label="Dashboard view toggle">
+          <button class="view-toggle-btn active" id="view-toggle-cards" data-label="Cards" title="Cards" aria-label="Cards view" onclick="setDashboardView('cards')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="9" y1="4" x2="9" y2="20"/><line x1="15" y1="4" x2="15" y2="20"/></svg>
+          </button>
+          <button class="view-toggle-btn" id="view-toggle-table" data-label="Table" title="Table" aria-label="Table view" onclick="setDashboardView('table')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="10" x2="8" y2="20"/><line x1="14" y1="10" x2="14" y2="20"/></svg>
+          </button>
         </div>
-
-        <div class="request-card urgent-card"
-             data-job-order-id="MR-2026-001"
-             data-title="Synthetic Engine Oil 5W-30"
-             data-item-code="OIL-5W30-SYN"
-             data-quantity="5 L"
-             data-vehicle="Toyota Hilux - ABC 1234"
-             data-requested="Apr 28, 2026"
-             data-required="May 1, 2026">
-          <div class="card-main">
-            <div class="card-title-row">
-              <span class="card-title">Synthetic Engine Oil 5W-30</span>
-              <span class="badge badge-urgent">Urgent</span>
-            </div>
-            <div class="card-grid">
-              <div class="card-field"><label>Item Code</label><span>OIL-5W30-SYN</span></div>
-              <div class="card-field"><label>Quantity</label><span>5 L</span></div>
-              <div class="card-field"><label>Vehicle</label><span>Toyota Hilux - ABC 1234</span></div>
-              <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
-            </div>
-            <div class="card-purpose"><div class="purpose-label">Purpose</div>Routine engine oil change and filter replacement</div>
-            <div class="card-meta">
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-001</span>
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 28, 2026</span>
-              <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: May 1, 2026</span>
-            </div>
-          </div>
-          <div class="card-actions">
-            <div class="status-label">Current Status</div>
-            <span class="status-badge status-approved">Approved</span>
-            <button class="update-btn" onclick="openStatusModal('MR-2026-001', 'Engine Oil Change', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
-          </div>
+        <div class="sort-control">
+          <button class="sort-label" id="sort-direction-btn" type="button" title="Sorted by required date ascending" aria-label="Sorted by required date ascending" onclick="toggleDashboardSortDirection()">
+            <svg id="sort-direction-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17V5"/><path d="M3.5 8.5L7 5l3.5 3.5"/><path d="M13 7h8"/><path d="M13 12h6"/><path d="M13 17h4"/></svg>
+          </button>
+          <select class="sort-select" id="dashboard-sort" onchange="setDashboardSort(this.value)">
+            <option value="required-date" selected>Required Date</option>
+            <option value="requested-date">Requested Date</option>
+            <option value="item-name">Item Name</option>
+            <option value="status">Status</option>
+          </select>
         </div>
-
-        <div class="request-card urgent-card"
-             data-job-order-id="MR-2026-002"
-             data-title="Brake Pads - Premium Grade"
-             data-item-code="BRK-PAD-IDM-2026"
-             data-quantity="2 SET"
-             data-vehicle="Isuzu D-Max - XYZ 5678"
-             data-requested="Apr 27, 2026"
-             data-required="Apr 30, 2026">
-          <div class="card-main">
-            <div class="card-title-row">
-              <span class="card-title">Brake Pads - Premium Grade</span>
-              <span class="badge badge-urgent">Urgent</span>
-            </div>
-            <div class="card-grid">
-              <div class="card-field"><label>Item Code</label><span>BRK-PAD-IDM-2026</span></div>
-              <div class="card-field"><label>Quantity</label><span>2 SET</span></div>
-              <div class="card-field"><label>Vehicle</label><span>Isuzu D-Max - XYZ 5678</span></div>
-              <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
-            </div>
-            <div class="card-purpose"><div class="purpose-label">Purpose</div>Front and rear brake pad replacement needed</div>
-            <div class="card-meta">
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-002</span>
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 27, 2026</span>
-              <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: Apr 30, 2026</span>
-            </div>
-          </div>
-          <div class="card-actions">
-            <div class="status-label">Current Status</div>
-            <span class="status-badge status-processing">Processing</span>
-            <button class="update-btn" onclick="openStatusModal('MR-2026-002', 'Brake Pads', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
-          </div>
-        </div>
-
-        <div class="request-card urgent-card"
-             data-job-order-id="MR-2026-004"
-             data-title="Heavy-Duty Vehicle Battery 12V 100Ah"
-             data-item-code="BAT-100-12V"
-             data-quantity="1 UNIT"
-             data-vehicle="Nissan Navara - JKL 7890"
-             data-requested="Apr 25, 2026"
-             data-required="Apr 28, 2026">
-          <div class="card-main">
-            <div class="card-title-row">
-              <span class="card-title">Heavy-Duty Vehicle Battery 12V 100Ah</span>
-              <span class="badge badge-urgent">Urgent</span>
-            </div>
-            <div class="card-grid">
-              <div class="card-field"><label>Item Code</label><span>BAT-100-12V</span></div>
-              <div class="card-field"><label>Quantity</label><span>1 UNIT</span></div>
-              <div class="card-field"><label>Vehicle</label><span>Nissan Navara - JKL 7890</span></div>
-              <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
-            </div>
-            <div class="card-purpose"><div class="purpose-label">Purpose</div>Battery showing signs of failure, immediate replacement needed</div>
-            <div class="card-meta">
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-004</span>
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 25, 2026</span>
-              <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: Apr 28, 2026</span>
-            </div>
-          </div>
-          <div class="card-actions">
-            <div class="status-label">Current Status</div>
-            <span class="status-badge status-approved">Approved</span>
-            <button class="update-btn" onclick="openStatusModal('MR-2026-004', 'Battery', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="request-group" id="standard-group">
-        <!-- STANDARD -->
-        <div class="section-header standard" style="margin-top:8px;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="18" height="18" rx="2"/>
-            <line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/>
-            <line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/>
-          </svg>
-          Standard Material Requests (2)
-        </div>
-
-        <div class="request-card"
-             data-job-order-id="MR-2026-003"
-             data-title="Tire Balancing Weights"
-             data-item-code="TIRE-BAL-WEIGHT"
-             data-quantity="4 SET"
-             data-vehicle="Mitsubishi L300 - DEF 9012"
-             data-requested="Apr 26, 2026"
-             data-required="May 3, 2026">
-          <div class="card-main">
-            <div class="card-title-row">
-              <span class="card-title">Tire Balancing Weights</span>
-              <span class="badge badge-doable">Standard</span>
-            </div>
-            <div class="card-grid">
-              <div class="card-field"><label>Item Code</label><span>TIRE-BAL-WEIGHT</span></div>
-              <div class="card-field"><label>Quantity</label><span>4 SET</span></div>
-              <div class="card-field"><label>Vehicle</label><span>Mitsubishi L300 - DEF 9012</span></div>
-              <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
-            </div>
-            <div class="card-purpose"><div class="purpose-label">Purpose</div>Regular tire rotation service</div>
-            <div class="card-meta">
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-003</span>
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 26, 2026</span>
-              <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: May 3, 2026</span>
-            </div>
-          </div>
-          <div class="card-actions">
-            <div class="status-label">Current Status</div>
-            <span class="status-badge status-completed">Completed</span>
-            <button class="update-btn" onclick="openStatusModal('MR-2026-003', 'Tire Weights', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
-          </div>
-        </div>
-
-        <div class="request-card"
-             data-job-order-id="MR-2026-005"
-             data-title="AC System Parts (Pending Diagnostic)"
-             data-item-code="AC-PARTS-TBD"
-             data-quantity="1 SET"
-             data-vehicle="Ford Ranger - GHI 3456"
-             data-requested="Apr 24, 2026"
-             data-required="May 10, 2026">
-          <div class="card-main">
-            <div class="card-title-row">
-              <span class="card-title">AC System Parts (Pending Diagnostic)</span>
-              <span class="badge badge-doable">Standard</span>
-            </div>
-            <div class="card-grid">
-              <div class="card-field"><label>Item Code</label><span>AC-PARTS-TBD</span></div>
-              <div class="card-field"><label>Quantity</label><span>1 SET</span></div>
-              <div class="card-field"><label>Vehicle</label><span>Ford Ranger - GHI 3456</span></div>
-              <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
-            </div>
-            <div class="card-purpose"><div class="purpose-label">Purpose</div>AC system not cooling properly, needs diagnostic and part replacement</div>
-            <div class="card-meta">
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-005</span>
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 24, 2026</span>
-              <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: May 10, 2026</span>
-            </div>
-          </div>
-          <div class="card-actions">
-            <div class="status-label">Current Status</div>
-            <span class="status-badge status-pending">Pending</span>
-            <button class="update-btn" onclick="openStatusModal('MR-2026-005', 'AC System', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
-          </div>
-        </div>
+        <button class="filter-btn" onclick="openFilter()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          Filter
+        </button>
       </div>
     </div>
 
-    <div id="table-view" class="request-table hidden">
-      <div class="section-header standard" style="margin-top:0; padding: 20px 20px 0;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="3" width="18" height="18" rx="2"/>
-          <line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/>
-          <line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/>
-        </svg>
-        Table View: Material Requests
+    <!-- HIGH PRIORITY -->
+    <div class="section-header urgent" id="urgent-section-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+        <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+      High Priority Material Requests (3)
+    </div>
+
+    <div class="request-card urgent-card" data-job-order-id="MR-2026-001">
+      <div class="card-main">
+        <div class="card-title-row">
+          <span class="card-title">Synthetic Engine Oil 5W-30</span>
+          <span class="badge badge-urgent">High</span>
+        </div>
+        <div class="card-grid">
+          <div class="card-field"><label>Item Code</label><span>OIL-5W30-SYN</span></div>
+          <div class="card-field"><label>Quantity</label><span>5 L</span></div>
+          <div class="card-field"><label>Vehicle</label><span>Toyota Hilux - ABC 1234</span></div>
+          <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
+        </div>
+        <div class="card-purpose"><div class="purpose-label">Purpose</div>Routine engine oil change and filter replacement</div>
+        <div class="card-meta">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-001</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 28, 2026</span>
+          <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: May 1, 2026</span>
+        </div>
       </div>
-      <div class="table-scroll">
-        <table class="request-table-element">
+      <div class="card-actions">
+        <div class="status-label">Current Status</div>
+        <span class="status-badge status-MaterialsOutOfStock">Materials Out-of-Stock</span>
+        <button class="update-btn" onclick="openStatusModal('MR-2026-001', 'Engine Oil Change', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
+      </div>
+    </div>
+
+    <div class="request-card urgent-card" data-job-order-id="MR-2026-002">
+      <div class="card-main">
+        <div class="card-title-row">
+          <span class="card-title">Brake Pads - Premium Grade</span>
+          <span class="badge badge-urgent">High</span>
+        </div>
+        <div class="card-grid">
+          <div class="card-field"><label>Item Code</label><span>BRK-PAD-IDM-2026</span></div>
+          <div class="card-field"><label>Quantity</label><span>2 SET</span></div>
+          <div class="card-field"><label>Vehicle</label><span>Isuzu D-Max - XYZ 5678</span></div>
+          <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
+        </div>
+        <div class="card-purpose"><div class="purpose-label">Purpose</div>Front and rear brake pad replacement needed</div>
+        <div class="card-meta">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-002</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 27, 2026</span>
+          <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: Apr 30, 2026</span>
+        </div>
+      </div>
+      <div class="card-actions">
+        <div class="status-label">Current Status</div>
+        <span class="status-badge status-OrderingMaterials">Ordering Materials</span>
+        <button class="update-btn" onclick="openStatusModal('MR-2026-002', 'Brake Pads', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
+      </div>
+    </div>
+
+    <div class="request-card urgent-card" data-job-order-id="MR-2026-004">
+      <div class="card-main">
+        <div class="card-title-row">
+          <span class="card-title">Heavy-Duty Vehicle Battery 12V 100Ah</span>
+          <span class="badge badge-urgent">High</span>
+        </div>
+        <div class="card-grid">
+          <div class="card-field"><label>Item Code</label><span>BAT-100-12V</span></div>
+          <div class="card-field"><label>Quantity</label><span>1 UNIT</span></div>
+          <div class="card-field"><label>Vehicle</label><span>Nissan Navara - JKL 7890</span></div>
+          <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
+        </div>
+        <div class="card-purpose"><div class="purpose-label">Purpose</div>Battery showing signs of failure, immediate replacement needed</div>
+        <div class="card-meta">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-004</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 25, 2026</span>
+          <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: Apr 28, 2026</span>
+        </div>
+      </div>
+      <div class="card-actions">
+        <div class="status-label">Current Status</div>
+        <span class="status-badge status-MaterialsOutOfStock">Materials Out-of-Stock</span>
+        <button class="update-btn" onclick="openStatusModal('MR-2026-004', 'Battery', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
+      </div>
+    </div>
+
+    <!-- MEDIUM PRIORITY -->
+    <div class="section-header standard" id="standard-section-header" style="margin-top:8px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/>
+        <line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/>
+      </svg>
+      Medium Priority Material Requests (2)
+    </div>
+
+    <div class="request-card" data-job-order-id="MR-2026-003">
+      <div class="card-main">
+        <div class="card-title-row">
+          <span class="card-title">Tire Balancing Weights</span>
+          <span class="badge badge-doable">Medium</span>
+        </div>
+        <div class="card-grid">
+          <div class="card-field"><label>Item Code</label><span>TIRE-BAL-WEIGHT</span></div>
+          <div class="card-field"><label>Quantity</label><span>4 SET</span></div>
+          <div class="card-field"><label>Vehicle</label><span>Mitsubishi L300 - DEF 9012</span></div>
+          <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
+        </div>
+        <div class="card-purpose"><div class="purpose-label">Purpose</div>Regular tire rotation service</div>
+        <div class="card-meta">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-003</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 26, 2026</span>
+          <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: May 3, 2026</span>
+        </div>
+      </div>
+      <div class="card-actions">
+        <div class="status-label">Current Status</div>
+        <span class="status-badge status-MaterialInStock">Material In-Stock</span>
+        <button class="update-btn" onclick="openStatusModal('MR-2026-003', 'Tire Weights', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
+      </div>
+    </div>
+
+    <div class="request-card" data-job-order-id="MR-2026-005">
+      <div class="card-main">
+        <div class="card-title-row">
+          <span class="card-title">AC System Parts (Pending Diagnostic)</span>
+          <span class="badge badge-doable">Medium</span>
+        </div>
+        <div class="card-grid">
+          <div class="card-field"><label>Item Code</label><span>AC-PARTS-TBD</span></div>
+          <div class="card-field"><label>Quantity</label><span>1 SET</span></div>
+          <div class="card-field"><label>Vehicle</label><span>Ford Ranger - GHI 3456</span></div>
+          <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
+        </div>
+        <div class="card-purpose"><div class="purpose-label">Purpose</div>AC system not cooling properly, needs diagnostic and part replacement</div>
+        <div class="card-meta">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-005</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 24, 2026</span>
+          <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: May 10, 2026</span>
+        </div>
+      </div>
+      <div class="card-actions">
+        <div class="status-label">Current Status</div>
+        <span class="status-badge status-InProcess">In Process</span>
+        <button class="update-btn" onclick="openStatusModal('MR-2026-005', 'AC System', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
+      </div>
+    </div>
+
+    <!-- LOW PRIORITY -->
+    <div class="section-header low" id="low-section-header" style="margin-top:8px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M8 12h8"/>
+      </svg>
+      Low Priority Material Requests (1)
+    </div>
+
+    <div class="request-card" data-job-order-id="MR-2026-006">
+      <div class="card-main">
+        <div class="card-title-row">
+          <span class="card-title">Cabin Air Filter</span>
+          <span class="badge badge-doable">Low</span>
+        </div>
+        <div class="card-grid">
+          <div class="card-field"><label>Item Code</label><span>AIR-FLTR-CLB-2026</span></div>
+          <div class="card-field"><label>Quantity</label><span>1 UNIT</span></div>
+          <div class="card-field"><label>Vehicle</label><span>Mitsubishi L300 - DEF 9012</span></div>
+          <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
+        </div>
+        <div class="card-purpose"><div class="purpose-label">Purpose</div>Routine cabin filter replacement during scheduled maintenance</div>
+        <div class="card-meta">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-006</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 23, 2026</span>
+          <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: May 12, 2026</span>
+        </div>
+      </div>
+      <div class="card-actions">
+        <div class="status-label">Current Status</div>
+        <span class="status-badge status-MaterialInStock">Material In-Stock</span>
+        <button class="update-btn" onclick="openStatusModal('MR-2026-006', 'Cabin Air Filter', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
+      </div>
+    </div>
+
+    <div class="table-view-container" id="table-view-container">
+      <div class="dashboard-table-wrap">
+        <table class="dashboard-table" aria-label="Material requests table">
           <thead>
             <tr>
-              <th>Material Requested</th>
-              <th>Item Code</th>
-              <th>Unit / Vehicle</th>
-              <th>Quantity</th>
-              <th>Date Requested</th>
-              <th>Date Required</th>
+              <th>MR ID</th>
+              <th>Item</th>
+              <th>Priority</th>
+              <th>Vehicle</th>
+              <th>Requested</th>
+              <th>Required</th>
               <th>Status</th>
             </tr>
           </thead>
-          <tbody id="request-table-body"></tbody>
+          <tbody id="dashboard-table-body">
+            <tr data-job-order-id="MR-2026-001" data-priority="urgent">
+              <td>MR-2026-001</td><td>Synthetic Engine Oil 5W-30</td><td class="table-priority-urgent">Urgent</td><td>Toyota Hilux - ABC 1234</td><td>Apr 28, 2026</td><td>May 1, 2026</td>
+              <td><button class="status-chip-btn" onclick="openStatusModal('MR-2026-001', 'Engine Oil Change', this)"><span class="status-chip status-MaterialsOutOfStock">Materials Out-of-Stock</span></button></td>
+            </tr>
+            <tr data-job-order-id="MR-2026-002" data-priority="urgent">
+              <td>MR-2026-002</td><td>Brake Pads - Premium Grade</td><td class="table-priority-urgent">Urgent</td><td>Isuzu D-Max - XYZ 5678</td><td>Apr 27, 2026</td><td>Apr 30, 2026</td>
+              <td><button class="status-chip-btn" onclick="openStatusModal('MR-2026-002', 'Brake Pads', this)"><span class="status-chip status-OrderingMaterials">Ordering Materials</span></button></td>
+            </tr>
+            <tr data-job-order-id="MR-2026-004" data-priority="urgent">
+              <td>MR-2026-004</td><td>Heavy-Duty Vehicle Battery 12V 100Ah</td><td class="table-priority-urgent">Urgent</td><td>Nissan Navara - JKL 7890</td><td>Apr 25, 2026</td><td>Apr 28, 2026</td>
+              <td><button class="status-chip-btn" onclick="openStatusModal('MR-2026-004', 'Battery', this)"><span class="status-chip status-OrderingMaterials">Ordering Materials</span></button></td>
+            </tr>
+            <tr data-job-order-id="MR-2026-003" data-priority="standard">
+              <td>MR-2026-003</td><td>Tire Balancing Weights</td><td class="table-priority-standard">Standard</td><td>Mitsubishi L300 - DEF 9012</td><td>Apr 26, 2026</td><td>May 3, 2026</td>
+              <td><button class="status-chip-btn" onclick="openStatusModal('MR-2026-003', 'Tire Weights', this)"><span class="status-chip status-MaterialInStock">Material In-Stock</span></button></td>
+            </tr>
+            <tr data-job-order-id="MR-2026-005" data-priority="standard">
+              <td>MR-2026-005</td><td>AC System Parts (Pending Diagnostic)</td><td class="table-priority-standard">Standard</td><td>Ford Ranger - GHI 3456</td><td>Apr 24, 2026</td><td>May 10, 2026</td>
+              <td><button class="status-chip-btn" onclick="openStatusModal('MR-2026-005', 'AC System', this)"><span class="status-chip status-InProcess">In Process</span></button></td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
@@ -721,7 +867,9 @@
       <button class="inbox-action-btn" id="unread-only-btn" onclick="toggleUnreadOnly()">Unread Only</button>
     </div>
   </div>
-  <div class="inbox-body" id="inbox-body"></div>
+  <div class="inbox-body" id="inbox-body">
+    <!-- rendered by JS -->
+  </div>
   <div class="inbox-footer">
     <button class="view-all-link">View All Messages</button>
   </div>
@@ -733,7 +881,8 @@
     <h3>Message</h3>
     <button class="msg-close" onclick="closeMessage()">×</button>
   </div>
-  <div class="msg-body" id="msg-body"></div>
+  <div class="msg-body" id="msg-body">
+  </div>
 </div>
 
 <!-- FILTER MODAL -->
@@ -763,10 +912,10 @@
         <h4>Material Requisition Status</h4>
         <div class="toggle-group" id="status-group">
           <button class="toggle-btn active" onclick="toggle(this,'status-group')">All</button>
-          <button class="toggle-btn" onclick="toggle(this,'status-group')">Pending</button>
-          <button class="toggle-btn" onclick="toggle(this,'status-group')">Approved</button>
-          <button class="toggle-btn" onclick="toggle(this,'status-group')">Processing</button>
-          <button class="toggle-btn" onclick="toggle(this,'status-group')">Completed</button>
+          <button class="toggle-btn" onclick="toggle(this,'status-group')">In Process</button>
+          <button class="toggle-btn" onclick="toggle(this,'status-group')">Materials Out-of-Stock</button>
+          <button class="toggle-btn" onclick="toggle(this,'status-group')">Ordering Materials</button>
+          <button class="toggle-btn" onclick="toggle(this,'status-group')">Material In-Stock</button>
         </div>
       </div>
     </div>
@@ -792,25 +941,25 @@
         <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 4px; line-height: 1.2;">Select New Status</h4>
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.25;">Choose the new material requisition status for this job order.</p>
         <div class="status-options">
-          <div class="status-option" data-status="Pending" onclick="selectStatus(this, 'Pending')">
+          <div class="status-option" data-status="In-Process" onclick="selectStatus(this, 'In-Process', '#ffe082')">
             <div class="status-option-icon">⏱️</div>
-            <div class="status-option-title">Pending</div>
-            <div class="status-option-desc">Awaiting approval</div>
+            <div class="status-option-title">In Process</div>
+            <div class="status-option-desc">Currently being processed</div>
           </div>
-          <div class="status-option" data-status="Approved" onclick="selectStatus(this, 'Approved')">
-            <div class="status-option-icon">✓</div>
-            <div class="status-option-title">Approved</div>
-            <div class="status-option-desc">Materials approved</div>
+          <div class="status-option" data-status="Materials Out-of-Stock" onclick="selectStatus(this, 'Materials Out-of-Stock', '#ffe082')">
+            <div class="status-option-icon">⚠️</div>
+            <div class="status-option-title">Materials Out-of-Stock</div>
+            <div class="status-option-desc">Materials are out of stock</div>
           </div>
-          <div class="status-option" data-status="Processing" onclick="selectStatus(this, 'Processing')">
+          <div class="status-option" data-status="Ordering Materials" onclick="selectStatus(this, 'Ordering Materials', '#90caf9')">
             <div class="status-option-icon">↻</div>
-            <div class="status-option-title">Processing</div>
-            <div class="status-option-desc">Currently processing</div>
+            <div class="status-option-title">Ordering Materials</div>
+            <div class="status-option-desc">Currently ordering materials</div>
           </div>
-          <div class="status-option" data-status="Completed" onclick="selectStatus(this, 'Completed')">
-            <div class="status-option-icon">✔️</div>
-            <div class="status-option-title">Completed</div>
-            <div class="status-option-desc">Work completed</div>
+          <div class="status-option" data-status="Material In-Stock" onclick="selectStatus(this, 'Material In-Stock', '#a5d6a7')">
+            <div class="status-option-icon">✅</div>
+            <div class="status-option-title">Material In-Stock</div>
+            <div class="status-option-desc">Materials are in stock</div>
           </div>
         </div>
       </div>
@@ -827,13 +976,50 @@
 </div>
 
 <script>
-  // ── LOGIN ──
+  const splashDuration = 1100;
+  const cardRevealDelay = 180;
+
+  function showDashboard() {
+    document.getElementById('login-page').style.display = 'none';
+    document.getElementById('dashboard-page').style.display = 'block';
+  }
+
+  function showLogin() {
+    document.getElementById('dashboard-page').style.display = 'none';
+    document.getElementById('login-page').style.display = 'flex';
+  }
+
+  function restoreSessionIfNeeded() {
+    if (sessionStorage.getItem('warehouseLoggedIn') === 'true') {
+      showDashboard();
+      return true;
+    }
+    return false;
+  }
+
+  window.addEventListener('load', function() {
+    if (restoreSessionIfNeeded()) return;
+
+    const splash = document.getElementById('splash-screen');
+    const loginCard = document.getElementById('login-card');
+
+    requestAnimationFrame(function() {
+      setTimeout(function() {
+        if (splash) splash.classList.add('splash-screen-hidden');
+      }, splashDuration);
+
+      setTimeout(function() {
+        if (loginCard) loginCard.classList.add('login-card-visible');
+      }, splashDuration + cardRevealDelay);
+    });
+  });
+
   function doLogin() {
     const pw = document.getElementById('pw-input').value;
     const err = document.getElementById('login-error');
     if (pw === 'warehouse123') {
-      document.getElementById('login-page').style.display = 'none';
-      document.getElementById('dashboard-page').style.display = 'block';
+      sessionStorage.setItem('warehouseLoggedIn', 'true');
+      showDashboard();
       err.style.display = 'none';
     } else {
       err.style.display = 'block';
@@ -842,12 +1028,125 @@
   document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 
   function doLogout() {
-    document.getElementById('dashboard-page').style.display = 'none';
-    document.getElementById('login-page').style.display = 'flex';
+    sessionStorage.removeItem('warehouseLoggedIn');
+    showLogin();
     document.getElementById('pw-input').value = '';
   }
 
-  // ── FILTER ──
+  let dashboardSort = 'required-date';
+  let dashboardSortDirection = 'asc';
+  let dashboardView = 'cards';
+
+  function parseCardDate(card, prefix) {
+    const metaSpans = card.querySelectorAll('.card-meta span');
+    const raw = Array.from(metaSpans).map(s => s.textContent.trim()).find(t => t.toLowerCase().startsWith(prefix));
+    if (!raw) return 0;
+    const value = raw.replace(/^.*?:\s*/, '').trim();
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? 0 : date.getTime();
+  }
+
+  function getCardSortValue(card, sortBy) {
+    if (sortBy === 'requested-date') return parseCardDate(card, 'requested');
+    if (sortBy === 'item-name') return card.querySelector('.card-title')?.textContent.trim().toLowerCase() || '';
+    if (sortBy === 'status') return card.querySelector('.status-badge')?.textContent.trim().toLowerCase() || '';
+    return parseCardDate(card, 'required');
+  }
+
+  function compareCardValues(aValue, bValue) {
+    if (aValue < bValue) return dashboardSortDirection === 'asc' ? -1 : 1;
+    if (aValue > bValue) return dashboardSortDirection === 'asc' ? 1 : -1;
+    return 0;
+  }
+
+  function sortCardGroup(selector, insertionAnchor) {
+    const cards = Array.from(document.querySelectorAll(selector));
+    cards.sort((a, b) => compareCardValues(getCardSortValue(a, dashboardSort), getCardSortValue(b, dashboardSort)));
+    const parent = insertionAnchor.parentElement;
+    cards.forEach(card => parent.insertBefore(card, insertionAnchor));
+  }
+
+  function applyDashboardSort() {
+    const standardHeader = document.getElementById('standard-section-header');
+    if (!standardHeader) return;
+    sortCardGroup('.request-card.urgent-card', standardHeader);
+    const standardCards = Array.from(document.querySelectorAll('.request-card:not(.urgent-card)'));
+    standardCards.sort((a, b) => compareCardValues(getCardSortValue(a, dashboardSort), getCardSortValue(b, dashboardSort)));
+    const parent = standardHeader.parentElement;
+    standardCards.forEach(card => parent.appendChild(card));
+
+    const tableBody = document.getElementById('dashboard-table-body');
+    if (tableBody) {
+      const rows = Array.from(tableBody.querySelectorAll('tr'));
+      const getRowValue = (row, sortBy) => {
+        const cells = row.querySelectorAll('td');
+        if (!cells.length) return '';
+        if (sortBy === 'requested-date') return new Date(cells[4].textContent.trim()).getTime() || 0;
+        if (sortBy === 'item-name') return cells[1].textContent.trim().toLowerCase();
+        if (sortBy === 'status') return cells[6].textContent.trim().toLowerCase();
+        return new Date(cells[5].textContent.trim()).getTime() || 0;
+      };
+
+      const urgent = rows.filter(r => (r.dataset.priority || '').toLowerCase() === 'urgent');
+      const standard = rows.filter(r => (r.dataset.priority || '').toLowerCase() !== 'urgent');
+      urgent.sort((a, b) => compareCardValues(getRowValue(a, dashboardSort), getRowValue(b, dashboardSort)));
+      standard.sort((a, b) => compareCardValues(getRowValue(a, dashboardSort), getRowValue(b, dashboardSort)));
+      [...urgent, ...standard].forEach(r => tableBody.appendChild(r));
+    }
+  }
+
+  function getSortLabel() {
+    const map = {
+      'required-date': 'required date',
+      'requested-date': 'requested date',
+      'item-name': 'item name',
+      status: 'status'
+    };
+    return map[dashboardSort] || 'required date';
+  }
+
+  function updateSortIndicator() {
+    const icon = document.getElementById('sort-direction-icon');
+    const button = document.getElementById('sort-direction-btn');
+    if (!icon || !button) return;
+
+    if (dashboardSortDirection === 'asc') {
+      icon.innerHTML = '<path d="M7 17V5"/><path d="M3.5 8.5L7 5l3.5 3.5"/><path d="M13 7h8"/><path d="M13 12h6"/><path d="M13 17h4"/>';
+    } else {
+      icon.innerHTML = '<path d="M7 7v12"/><path d="M3.5 15.5L7 19l3.5-3.5"/><path d="M13 7h4"/><path d="M13 12h6"/><path d="M13 17h8"/>';
+    }
+
+    const sortLabel = getSortLabel();
+    const directionLabel = dashboardSortDirection === 'asc' ? 'ascending' : 'descending';
+    const title = `Sorted by ${sortLabel} ${directionLabel}`;
+    button.setAttribute('title', title);
+    button.setAttribute('aria-label', title);
+  }
+
+  function setDashboardSort(value) {
+    dashboardSort = value;
+    applyDashboardSort();
+    updateSortIndicator();
+  }
+
+  function toggleDashboardSortDirection() {
+    dashboardSortDirection = dashboardSortDirection === 'asc' ? 'desc' : 'asc';
+    applyDashboardSort();
+    updateSortIndicator();
+  }
+
+  function setDashboardView(view) {
+    dashboardView = view;
+    const dashboard = document.getElementById('dashboard-page');
+    const cardsBtn = document.getElementById('view-toggle-cards');
+    const tableBtn = document.getElementById('view-toggle-table');
+    if (!dashboard || !cardsBtn || !tableBtn) return;
+
+    dashboard.classList.toggle('dashboard-table-view', view === 'table');
+    cardsBtn.classList.toggle('active', view === 'cards');
+    tableBtn.classList.toggle('active', view === 'table');
+  }
+
   function openFilter() { document.getElementById('filter-modal').classList.add('open'); }
   function closeFilter() { document.getElementById('filter-modal').classList.remove('open'); }
 
@@ -869,7 +1168,7 @@
     if (e.target === this) closeFilter();
   });
 
-  // ── INBOX ──
+  // INBOX & NOTIFICATIONS
   const messages = [
     {
       id: 1,
@@ -878,7 +1177,8 @@
       tag: 'JO-2026-002',
       time: '10 mins ago',
       body: 'Brake pads for Isuzu D-Max are now in stock. We can proceed with the installation. Estimated completion: 2 days.',
-      read: false
+      read: false,
+      tagColor: '#2e9e3e'
     },
     {
       id: 2,
@@ -887,7 +1187,8 @@
       tag: 'JO-2026-005',
       time: '45 mins ago',
       body: 'Battery for Nissan Navara has been ordered from supplier. Expected arrival: April 30, 2026. Will notify upon receipt.',
-      read: false
+      read: false,
+      tagColor: '#2e9e3e'
     },
     {
       id: 3,
@@ -896,15 +1197,19 @@
       tag: 'JO-2026-001',
       time: '2 hrs ago',
       body: 'Engine oil change for Toyota Hilux has been completed. Please review and close the job order.',
-      read: false
+      read: false,
+      tagColor: '#1565c0'
     }
   ];
 
   function renderInboxMessages() {
     const inboxBody = document.getElementById('inbox-body');
     const showUnreadOnly = document.getElementById('unread-only-btn')?.classList.contains('active-filter');
+    
     let html = '<div class="inbox-group-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Warehouse Replies (4)</div><div class="inbox-group-sub">Messages from warehouse regarding your job orders</div>';
+    
     const messagesToShow = showUnreadOnly ? messages.filter(m => !m.read) : messages;
+    
     messagesToShow.forEach(msg => {
       const readClass = msg.read ? 'read' : '';
       const dotClass = msg.read ? 'hidden' : '';
@@ -924,6 +1229,7 @@
         <div class="inbox-item-body">${msg.body}</div>
       </div>`;
     });
+    
     inboxBody.innerHTML = html;
   }
 
@@ -940,8 +1246,9 @@
   function openMessage(msgId) {
     const msg = messages.find(m => m.id === msgId);
     if (!msg) return;
+    
     const msgBody = document.getElementById('msg-body');
-    msgBody.innerHTML = `
+    let html = `
       <button class="msg-back" onclick="renderInboxMessages()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>Back to inbox</button>
       <div class="msg-title">${msg.title}</div>
       <div class="msg-meta-row">
@@ -952,6 +1259,7 @@
       <button class="msg-mark-btn" onclick="toggleReadStatus(${msg.id})">${msg.read ? 'Mark as Unread' : 'Mark as Read'}</button>
       <div class="msg-content">${msg.body}</div>
     `;
+    msgBody.innerHTML = html;
     document.getElementById('message-detail').classList.add('open');
   }
 
@@ -972,6 +1280,7 @@
     const unreadCount = messages.filter(m => !m.read).length;
     const badge = document.getElementById('notif-badge');
     const label = document.getElementById('unread-count-label');
+    
     if (unreadCount > 0) {
       badge.textContent = unreadCount;
       badge.style.display = 'flex';
@@ -981,34 +1290,47 @@
     label.textContent = unreadCount > 0 ? `${unreadCount} unread message${unreadCount !== 1 ? 's' : ''}` : 'No unread messages';
   }
 
-  function markAllRead() { messages.forEach(m => m.read = true); updateUnreadCount(); renderInboxMessages(); }
-  function markAllUnread() { messages.forEach(m => m.read = false); updateUnreadCount(); renderInboxMessages(); }
-  function toggleUnreadOnly() {
-    document.getElementById('unread-only-btn').classList.toggle('active-filter');
+  function markAllRead() {
+    messages.forEach(m => m.read = true);
+    updateUnreadCount();
     renderInboxMessages();
   }
 
+  function markAllUnread() {
+    messages.forEach(m => m.read = false);
+    updateUnreadCount();
+    renderInboxMessages();
+  }
+
+  function toggleUnreadOnly() {
+    const btn = document.getElementById('unread-only-btn');
+    btn.classList.toggle('active-filter');
+    renderInboxMessages();
+  }
+
+  // Close inbox when clicking backdrop
   document.addEventListener('click', function(e) {
     const inboxPanel = document.getElementById('inbox-panel');
-    if (inboxPanel.classList.contains('open') &&
-        !inboxPanel.contains(e.target) &&
+    if (inboxPanel.classList.contains('open') && 
+        !inboxPanel.contains(e.target) && 
         !document.getElementById('notif-btn').contains(e.target)) {
       closeInbox();
     }
   });
 
-  // ── STATUS MODAL ──
+  // STATUS UPDATE MODAL
   let currentStatusUpdate = { jobOrderId: null, jobTitle: null, newStatus: null };
 
   function openStatusModal(jobOrderId, jobTitle, button) {
     currentStatusUpdate = { jobOrderId, jobTitle, newStatus: null };
     document.getElementById('status-modal-subtitle').textContent = `${jobOrderId} - ${jobTitle}`;
     document.getElementById('status-modal').classList.add('open');
+    
+    // Reset status options
     document.querySelectorAll('.status-option').forEach(opt => opt.classList.remove('selected'));
-    const btn = document.getElementById('update-status-btn');
-    btn.disabled = true;
-    btn.style.opacity = '0.5';
-    btn.style.cursor = 'not-allowed';
+    document.getElementById('update-status-btn').disabled = true;
+    document.getElementById('update-status-btn').style.opacity = '0.5';
+    document.getElementById('update-status-btn').style.cursor = 'not-allowed';
   }
 
   function closeStatusModal() {
@@ -1016,114 +1338,61 @@
     currentStatusUpdate = { jobOrderId: null, jobTitle: null, newStatus: null };
   }
 
-  function selectStatus(element, status) {
+  function selectStatus(element, status, color) {
+    // Remove previous selection
     document.querySelectorAll('.status-option').forEach(opt => opt.classList.remove('selected'));
+    
+    // Add selection to current
     element.classList.add('selected');
     currentStatusUpdate.newStatus = status;
-    const btn = document.getElementById('update-status-btn');
-    btn.disabled = false;
-    btn.style.opacity = '1';
-    btn.style.cursor = 'pointer';
+    
+    // Enable update button
+    document.getElementById('update-status-btn').disabled = false;
+    document.getElementById('update-status-btn').style.opacity = '1';
+    document.getElementById('update-status-btn').style.cursor = 'pointer';
   }
 
   function updateMaterialStatus() {
     if (!currentStatusUpdate.newStatus) return;
+
     const statusClassMap = {
-      Pending: 'status-pending',
-      Approved: 'status-approved',
-      Processing: 'status-processing',
-      Completed: 'status-completed'
+      'In-Process': 'status-InProcess',
+      'Materials Out-of-Stock': 'status-MaterialsOutOfStock',
+      'Ordering Materials': 'status-OrderingMaterials',
+      'Material In-Stock': 'status-MaterialInStock'
     };
+
     const card = document.querySelector(`.request-card[data-job-order-id="${currentStatusUpdate.jobOrderId}"]`);
     if (card) {
       const badge = card.querySelector('.status-badge');
       if (badge) {
         badge.textContent = currentStatusUpdate.newStatus;
         Object.values(statusClassMap).forEach(cls => badge.classList.remove(cls));
-        badge.classList.add(statusClassMap[currentStatusUpdate.newStatus] || 'status-pending');
+        badge.classList.add(statusClassMap[currentStatusUpdate.newStatus] || 'status-InProcess');
       }
     }
-    closeStatusModal();
-    sortRequestGroups();
-    if (!document.getElementById('table-view').classList.contains('hidden')) {
-      buildRequestTable();
+
+    const row = document.querySelector(`#dashboard-table-body tr[data-job-order-id="${currentStatusUpdate.jobOrderId}"]`);
+    if (row) {
+      const chip = row.querySelector('.status-chip');
+      if (chip) {
+        chip.textContent = currentStatusUpdate.newStatus;
+        Object.values(statusClassMap).forEach(cls => chip.classList.remove(cls));
+        chip.classList.add(statusClassMap[currentStatusUpdate.newStatus] || 'status-InProcess');
+      }
     }
+
+    closeStatusModal();
   }
 
-  function sortRequestGroups() {
-    const order = { Approved: 1, Processing: 2, Pending: 3, Completed: 4 };
-    ['urgent-group', 'standard-group'].forEach(groupId => {
-      const group = document.getElementById(groupId);
-      if (!group) return;
-      const cards = Array.from(group.querySelectorAll('.request-card'));
-      cards.sort((a, b) => {
-        const statusA = a.querySelector('.status-badge')?.textContent.trim() || '';
-        const statusB = b.querySelector('.status-badge')?.textContent.trim() || '';
-        return (order[statusA] || 99) - (order[statusB] || 99);
-      });
-      cards.forEach(card => group.appendChild(card));
-    });
-  }
-
-  // ── TABLE VIEW — reads clean data from data-* attributes ──
-  function buildRequestTable() {
-    const tbody = document.getElementById('request-table-body');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-
-    const statusClassMap = {
-      Pending: 'status-pending',
-      Approved: 'status-approved',
-      Processing: 'status-processing',
-      Completed: 'status-completed'
-    };
-
-    document.querySelectorAll('#cards-view .request-card').forEach(card => {
-      // Pull clean values straight from data attributes
-      const title     = card.dataset.title      || '';
-      const itemCode  = card.dataset.itemCode   || '';
-      const vehicle   = card.dataset.vehicle    || '';
-      const quantity  = card.dataset.quantity   || '';
-      const requested = card.dataset.requested  || '';
-      const required  = card.dataset.required   || '';
-
-      // Status is live on the badge (may have been updated)
-      const status = card.querySelector('.status-badge')?.textContent.trim() || '';
-
-      const row = document.createElement('tr');
-
-      [title, itemCode, vehicle, quantity, requested, required].forEach(value => {
-        const cell = document.createElement('td');
-        cell.textContent = value;
-        row.appendChild(cell);
-      });
-
-      const statusCell = document.createElement('td');
-      const statusBadge = document.createElement('span');
-      statusBadge.className = `status-badge ${statusClassMap[status] || 'status-pending'}`;
-      statusBadge.textContent = status;
-      statusCell.appendChild(statusBadge);
-      row.appendChild(statusCell);
-
-      tbody.appendChild(row);
-    });
-  }
-
-  function switchRequestView(view) {
-    document.getElementById('cards-view').classList.toggle('hidden', view !== 'cards');
-    document.getElementById('table-view').classList.toggle('hidden', view !== 'table');
-    document.getElementById('cards-view-btn').classList.toggle('active', view === 'cards');
-    document.getElementById('table-view-btn').classList.toggle('active', view === 'table');
-    if (view === 'table') buildRequestTable();
-  }
-
-  document.getElementById('status-modal').addEventListener('click', function(e) {
+  document.getElementById('status-modal')?.addEventListener('click', function(e) {
     if (e.target === this) closeStatusModal();
   });
 
-  // ── INIT ──
+  // Initialize
   updateUnreadCount();
-  sortRequestGroups();
+  applyDashboardSort();
+  updateSortIndicator();
 </script>
 </body>
 </html>
