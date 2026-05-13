@@ -125,7 +125,9 @@
 
     .card-title-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
     .card-title { font-size: 17px; font-weight: 700; }
-    .badge { padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }\n    .badge-urgent { background: #ffe0e0; color: var(--red); }\n    .badge-doable { background: #f3f4f6; color: #6b7280; border: 1px solid #d1d5db; }
+    .badge { padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .badge-urgent { background: #ffe0e0; color: var(--red); }
+    .badge-doable { background: #f3f4f6; color: #6b7280; border: 1px solid #d1d5db; }
 
     .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; margin-bottom: 14px; }
     .card-field label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 3px; }
@@ -412,7 +414,7 @@
 <div id="login-page">
   <div class="login-card">
     <div class="login-icon">
-      <img src="logo-vtlc.jpg" alt="VTLC Logo" />
+      <img src="logo-vtlc.jpg" alt="VTLC Logo" onerror="this.style.display='none';this.parentNode.innerHTML='<svg viewBox=\'0 0 24 24\'><path d=\'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5\'/></svg>'"/>
     </div>
     <h1>RequiSite</h1>
     <p>Motorpool-Warehouse Material Requisition System</p>
@@ -429,7 +431,7 @@
   <header class="header">
     <div class="header-left">
       <div class="header-logo">
-        <img src="logo-vtlc.jpg" alt="VTLC Logo" />
+        <img src="logo-vtlc.jpg" alt="VTLC Logo" onerror="this.style.display='none'"/>
       </div>
       <div class="header-title">
         <h2>Warehouse Dashboard</h2>
@@ -485,160 +487,199 @@
         </svg>
       </button>
     </div>
+
     <div id="cards-view">
       <div class="request-group" id="urgent-group">
-    <!-- URGENT -->
-    <div class="section-header urgent">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-        <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-      </svg>
-      Urgent Material Requests (3)
-    </div>
+        <!-- URGENT -->
+        <div class="section-header urgent">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          Urgent Material Requests (3)
+        </div>
 
-    <div class="request-card urgent-card" data-job-order-id="MR-2026-001">
-      <div class="card-main">
-        <div class="card-title-row">
-          <span class="card-title">Synthetic Engine Oil 5W-30</span>
-          <span class="badge badge-urgent">Urgent</span>
+        <div class="request-card urgent-card"
+             data-job-order-id="MR-2026-001"
+             data-title="Synthetic Engine Oil 5W-30"
+             data-item-code="OIL-5W30-SYN"
+             data-quantity="5 L"
+             data-vehicle="Toyota Hilux - ABC 1234"
+             data-requested="Apr 28, 2026"
+             data-required="May 1, 2026">
+          <div class="card-main">
+            <div class="card-title-row">
+              <span class="card-title">Synthetic Engine Oil 5W-30</span>
+              <span class="badge badge-urgent">Urgent</span>
+            </div>
+            <div class="card-grid">
+              <div class="card-field"><label>Item Code</label><span>OIL-5W30-SYN</span></div>
+              <div class="card-field"><label>Quantity</label><span>5 L</span></div>
+              <div class="card-field"><label>Vehicle</label><span>Toyota Hilux - ABC 1234</span></div>
+              <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
+            </div>
+            <div class="card-purpose"><div class="purpose-label">Purpose</div>Routine engine oil change and filter replacement</div>
+            <div class="card-meta">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-001</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 28, 2026</span>
+              <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: May 1, 2026</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <div class="status-label">Current Status</div>
+            <span class="status-badge status-approved">Approved</span>
+            <button class="update-btn" onclick="openStatusModal('MR-2026-001', 'Engine Oil Change', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
+          </div>
         </div>
-        <div class="card-grid">
-          <div class="card-field"><label>Item Code</label><span>OIL-5W30-SYN</span></div>
-          <div class="card-field"><label>Quantity</label><span>5 L</span></div>
-          <div class="card-field"><label>Vehicle</label><span>Toyota Hilux - ABC 1234</span></div>
-          <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
-        </div>
-        <div class="card-purpose"><div class="purpose-label">Purpose</div>Routine engine oil change and filter replacement</div>
-        <div class="card-meta">
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-001</span>
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 28, 2026</span>
-          <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: May 1, 2026</span>
-        </div>
-      </div>
-      <div class="card-actions">
-        <div class="status-label">Current Status</div>
-        <span class="status-badge status-approved">Approved</span>
-        <button class="update-btn" onclick="openStatusModal('MR-2026-001', 'Engine Oil Change', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
-      </div>
-    </div>
 
-    <div class="request-card urgent-card" data-job-order-id="MR-2026-002">
-      <div class="card-main">
-        <div class="card-title-row">
-          <span class="card-title">Brake Pads - Premium Grade</span>
-          <span class="badge badge-urgent">Urgent</span>
+        <div class="request-card urgent-card"
+             data-job-order-id="MR-2026-002"
+             data-title="Brake Pads - Premium Grade"
+             data-item-code="BRK-PAD-IDM-2026"
+             data-quantity="2 SET"
+             data-vehicle="Isuzu D-Max - XYZ 5678"
+             data-requested="Apr 27, 2026"
+             data-required="Apr 30, 2026">
+          <div class="card-main">
+            <div class="card-title-row">
+              <span class="card-title">Brake Pads - Premium Grade</span>
+              <span class="badge badge-urgent">Urgent</span>
+            </div>
+            <div class="card-grid">
+              <div class="card-field"><label>Item Code</label><span>BRK-PAD-IDM-2026</span></div>
+              <div class="card-field"><label>Quantity</label><span>2 SET</span></div>
+              <div class="card-field"><label>Vehicle</label><span>Isuzu D-Max - XYZ 5678</span></div>
+              <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
+            </div>
+            <div class="card-purpose"><div class="purpose-label">Purpose</div>Front and rear brake pad replacement needed</div>
+            <div class="card-meta">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-002</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 27, 2026</span>
+              <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: Apr 30, 2026</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <div class="status-label">Current Status</div>
+            <span class="status-badge status-processing">Processing</span>
+            <button class="update-btn" onclick="openStatusModal('MR-2026-002', 'Brake Pads', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
+          </div>
         </div>
-        <div class="card-grid">
-          <div class="card-field"><label>Item Code</label><span>BRK-PAD-IDM-2026</span></div>
-          <div class="card-field"><label>Quantity</label><span>2 SET</span></div>
-          <div class="card-field"><label>Vehicle</label><span>Isuzu D-Max - XYZ 5678</span></div>
-          <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
-        </div>
-        <div class="card-purpose"><div class="purpose-label">Purpose</div>Front and rear brake pad replacement needed</div>
-        <div class="card-meta">
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-002</span>
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 27, 2026</span>
-          <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: Apr 30, 2026</span>
-        </div>
-      </div>
-      <div class="card-actions">
-        <div class="status-label">Current Status</div>
-        <span class="status-badge status-processing">Processing</span>
-        <button class="update-btn" onclick="openStatusModal('MR-2026-002', 'Brake Pads', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
-      </div>
-    </div>
 
-    <div class="request-card urgent-card" data-job-order-id="MR-2026-004">
-      <div class="card-main">
-        <div class="card-title-row">
-          <span class="card-title">Heavy-Duty Vehicle Battery 12V 100Ah</span>
-          <span class="badge badge-urgent">Urgent</span>
-        </div>
-        <div class="card-grid">
-          <div class="card-field"><label>Item Code</label><span>BAT-100-12V</span></div>
-          <div class="card-field"><label>Quantity</label><span>1 UNIT</span></div>
-          <div class="card-field"><label>Vehicle</label><span>Nissan Navara - JKL 7890</span></div>
-          <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
-        </div>
-        <div class="card-purpose"><div class="purpose-label">Purpose</div>Battery showing signs of failure, immediate replacement needed</div>
-        <div class="card-meta">
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-004</span>
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 25, 2026</span>
-          <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: Apr 28, 2026</span>
+        <div class="request-card urgent-card"
+             data-job-order-id="MR-2026-004"
+             data-title="Heavy-Duty Vehicle Battery 12V 100Ah"
+             data-item-code="BAT-100-12V"
+             data-quantity="1 UNIT"
+             data-vehicle="Nissan Navara - JKL 7890"
+             data-requested="Apr 25, 2026"
+             data-required="Apr 28, 2026">
+          <div class="card-main">
+            <div class="card-title-row">
+              <span class="card-title">Heavy-Duty Vehicle Battery 12V 100Ah</span>
+              <span class="badge badge-urgent">Urgent</span>
+            </div>
+            <div class="card-grid">
+              <div class="card-field"><label>Item Code</label><span>BAT-100-12V</span></div>
+              <div class="card-field"><label>Quantity</label><span>1 UNIT</span></div>
+              <div class="card-field"><label>Vehicle</label><span>Nissan Navara - JKL 7890</span></div>
+              <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
+            </div>
+            <div class="card-purpose"><div class="purpose-label">Purpose</div>Battery showing signs of failure, immediate replacement needed</div>
+            <div class="card-meta">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-004</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 25, 2026</span>
+              <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: Apr 28, 2026</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <div class="status-label">Current Status</div>
+            <span class="status-badge status-approved">Approved</span>
+            <button class="update-btn" onclick="openStatusModal('MR-2026-004', 'Battery', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
+          </div>
         </div>
       </div>
-      <div class="card-actions">
-        <div class="status-label">Current Status</div>
-        <span class="status-badge status-approved">Approved</span>
-        <button class="update-btn" onclick="openStatusModal('MR-2026-004', 'Battery', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
-      </div>
-    </div>
-      </div>
+
       <div class="request-group" id="standard-group">
-    <!-- STANDARD -->
-    <div class="section-header standard" style="margin-top:8px;">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <rect x="3" y="3" width="18" height="18" rx="2"/>
-        <line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/>
-        <line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/>
-      </svg>
-      Standard Material Requests (2)
+        <!-- STANDARD -->
+        <div class="section-header standard" style="margin-top:8px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/>
+            <line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/>
+          </svg>
+          Standard Material Requests (2)
+        </div>
+
+        <div class="request-card"
+             data-job-order-id="MR-2026-003"
+             data-title="Tire Balancing Weights"
+             data-item-code="TIRE-BAL-WEIGHT"
+             data-quantity="4 SET"
+             data-vehicle="Mitsubishi L300 - DEF 9012"
+             data-requested="Apr 26, 2026"
+             data-required="May 3, 2026">
+          <div class="card-main">
+            <div class="card-title-row">
+              <span class="card-title">Tire Balancing Weights</span>
+              <span class="badge badge-doable">Standard</span>
+            </div>
+            <div class="card-grid">
+              <div class="card-field"><label>Item Code</label><span>TIRE-BAL-WEIGHT</span></div>
+              <div class="card-field"><label>Quantity</label><span>4 SET</span></div>
+              <div class="card-field"><label>Vehicle</label><span>Mitsubishi L300 - DEF 9012</span></div>
+              <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
+            </div>
+            <div class="card-purpose"><div class="purpose-label">Purpose</div>Regular tire rotation service</div>
+            <div class="card-meta">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-003</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 26, 2026</span>
+              <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: May 3, 2026</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <div class="status-label">Current Status</div>
+            <span class="status-badge status-completed">Completed</span>
+            <button class="update-btn" onclick="openStatusModal('MR-2026-003', 'Tire Weights', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
+          </div>
+        </div>
+
+        <div class="request-card"
+             data-job-order-id="MR-2026-005"
+             data-title="AC System Parts (Pending Diagnostic)"
+             data-item-code="AC-PARTS-TBD"
+             data-quantity="1 SET"
+             data-vehicle="Ford Ranger - GHI 3456"
+             data-requested="Apr 24, 2026"
+             data-required="May 10, 2026">
+          <div class="card-main">
+            <div class="card-title-row">
+              <span class="card-title">AC System Parts (Pending Diagnostic)</span>
+              <span class="badge badge-doable">Standard</span>
+            </div>
+            <div class="card-grid">
+              <div class="card-field"><label>Item Code</label><span>AC-PARTS-TBD</span></div>
+              <div class="card-field"><label>Quantity</label><span>1 SET</span></div>
+              <div class="card-field"><label>Vehicle</label><span>Ford Ranger - GHI 3456</span></div>
+              <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
+            </div>
+            <div class="card-purpose"><div class="purpose-label">Purpose</div>AC system not cooling properly, needs diagnostic and part replacement</div>
+            <div class="card-meta">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-005</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 24, 2026</span>
+              <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: May 10, 2026</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <div class="status-label">Current Status</div>
+            <span class="status-badge status-pending">Pending</span>
+            <button class="update-btn" onclick="openStatusModal('MR-2026-005', 'AC System', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="request-card" data-job-order-id="MR-2026-003">
-      <div class="card-main">
-        <div class="card-title-row">
-          <span class="card-title">Tire Balancing Weights</span>
-          <span class="badge badge-doable">Standard</span>
-        </div>
-        <div class="card-grid">
-          <div class="card-field"><label>Item Code</label><span>TIRE-BAL-WEIGHT</span></div>
-          <div class="card-field"><label>Quantity</label><span>4 SET</span></div>
-          <div class="card-field"><label>Vehicle</label><span>Mitsubishi L300 - DEF 9012</span></div>
-          <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
-        </div>
-        <div class="card-purpose"><div class="purpose-label">Purpose</div>Regular tire rotation service</div>
-        <div class="card-meta">
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-003</span>
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 26, 2026</span>
-          <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: May 3, 2026</span>
-        </div>
-      </div>
-      <div class="card-actions">
-        <div class="status-label">Current Status</div>
-        <span class="status-badge status-completed">Completed</span>
-        <button class="update-btn" onclick="openStatusModal('MR-2026-003', 'Tire Weights', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
-      </div>
-    </div>
-
-    <div class="request-card" data-job-order-id="MR-2026-005">
-      <div class="card-main">
-        <div class="card-title-row">
-          <span class="card-title">AC System Parts (Pending Diagnostic)</span>
-          <span class="badge badge-doable">Standard</span>
-        </div>
-        <div class="card-grid">
-          <div class="card-field"><label>Item Code</label><span>AC-PARTS-TBD</span></div>
-          <div class="card-field"><label>Quantity</label><span>1 SET</span></div>
-          <div class="card-field"><label>Vehicle</label><span>Ford Ranger - GHI 3456</span></div>
-          <div class="card-field"><label>Requested By</label><span>John Doe</span></div>
-        </div>
-        <div class="card-purpose"><div class="purpose-label">Purpose</div>AC system not cooling properly, needs diagnostic and part replacement</div>
-        <div class="card-meta">
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>MR-2026-005</span>
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Requested: Apr 24, 2026</span>
-          <span class="required"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Required: May 10, 2026</span>
-        </div>
-      </div>
-      <div class="card-actions">
-        <div class="status-label">Current Status</div>
-        <span class="status-badge status-pending">Pending</span>
-        <button class="update-btn" onclick="openStatusModal('MR-2026-005', 'AC System', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Update Status</button>
-      </div>
-      </div>
-    </div>
     <div id="table-view" class="request-table hidden">
-      <div class="section-header standard" style="margin-top:0;">
+      <div class="section-header standard" style="margin-top:0; padding: 20px 20px 0;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <rect x="3" y="3" width="18" height="18" rx="2"/>
           <line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/>
@@ -680,9 +721,7 @@
       <button class="inbox-action-btn" id="unread-only-btn" onclick="toggleUnreadOnly()">Unread Only</button>
     </div>
   </div>
-  <div class="inbox-body" id="inbox-body">
-    <!-- rendered by JS -->
-  </div>
+  <div class="inbox-body" id="inbox-body"></div>
   <div class="inbox-footer">
     <button class="view-all-link">View All Messages</button>
   </div>
@@ -694,8 +733,7 @@
     <h3>Message</h3>
     <button class="msg-close" onclick="closeMessage()">×</button>
   </div>
-  <div class="msg-body" id="msg-body">
-  </div>
+  <div class="msg-body" id="msg-body"></div>
 </div>
 
 <!-- FILTER MODAL -->
@@ -754,22 +792,22 @@
         <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 4px; line-height: 1.2;">Select New Status</h4>
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.25;">Choose the new material requisition status for this job order.</p>
         <div class="status-options">
-          <div class="status-option" data-status="Pending" onclick="selectStatus(this, 'Pending', '#ffe082')">
+          <div class="status-option" data-status="Pending" onclick="selectStatus(this, 'Pending')">
             <div class="status-option-icon">⏱️</div>
             <div class="status-option-title">Pending</div>
             <div class="status-option-desc">Awaiting approval</div>
           </div>
-          <div class="status-option" data-status="Approved" onclick="selectStatus(this, 'Approved', '#a5d6a7')">
+          <div class="status-option" data-status="Approved" onclick="selectStatus(this, 'Approved')">
             <div class="status-option-icon">✓</div>
             <div class="status-option-title">Approved</div>
             <div class="status-option-desc">Materials approved</div>
           </div>
-          <div class="status-option" data-status="Processing" onclick="selectStatus(this, 'Processing', '#90caf9')">
+          <div class="status-option" data-status="Processing" onclick="selectStatus(this, 'Processing')">
             <div class="status-option-icon">↻</div>
             <div class="status-option-title">Processing</div>
             <div class="status-option-desc">Currently processing</div>
           </div>
-          <div class="status-option" data-status="Completed" onclick="selectStatus(this, 'Completed', '#ccc')">
+          <div class="status-option" data-status="Completed" onclick="selectStatus(this, 'Completed')">
             <div class="status-option-icon">✔️</div>
             <div class="status-option-title">Completed</div>
             <div class="status-option-desc">Work completed</div>
@@ -789,6 +827,7 @@
 </div>
 
 <script>
+  // ── LOGIN ──
   function doLogin() {
     const pw = document.getElementById('pw-input').value;
     const err = document.getElementById('login-error');
@@ -808,6 +847,7 @@
     document.getElementById('pw-input').value = '';
   }
 
+  // ── FILTER ──
   function openFilter() { document.getElementById('filter-modal').classList.add('open'); }
   function closeFilter() { document.getElementById('filter-modal').classList.remove('open'); }
 
@@ -829,7 +869,7 @@
     if (e.target === this) closeFilter();
   });
 
-  // INBOX & NOTIFICATIONS
+  // ── INBOX ──
   const messages = [
     {
       id: 1,
@@ -838,8 +878,7 @@
       tag: 'JO-2026-002',
       time: '10 mins ago',
       body: 'Brake pads for Isuzu D-Max are now in stock. We can proceed with the installation. Estimated completion: 2 days.',
-      read: false,
-      tagColor: '#2e9e3e'
+      read: false
     },
     {
       id: 2,
@@ -848,8 +887,7 @@
       tag: 'JO-2026-005',
       time: '45 mins ago',
       body: 'Battery for Nissan Navara has been ordered from supplier. Expected arrival: April 30, 2026. Will notify upon receipt.',
-      read: false,
-      tagColor: '#2e9e3e'
+      read: false
     },
     {
       id: 3,
@@ -858,19 +896,15 @@
       tag: 'JO-2026-001',
       time: '2 hrs ago',
       body: 'Engine oil change for Toyota Hilux has been completed. Please review and close the job order.',
-      read: false,
-      tagColor: '#1565c0'
+      read: false
     }
   ];
 
   function renderInboxMessages() {
     const inboxBody = document.getElementById('inbox-body');
     const showUnreadOnly = document.getElementById('unread-only-btn')?.classList.contains('active-filter');
-    
     let html = '<div class="inbox-group-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Warehouse Replies (4)</div><div class="inbox-group-sub">Messages from warehouse regarding your job orders</div>';
-    
     const messagesToShow = showUnreadOnly ? messages.filter(m => !m.read) : messages;
-    
     messagesToShow.forEach(msg => {
       const readClass = msg.read ? 'read' : '';
       const dotClass = msg.read ? 'hidden' : '';
@@ -890,7 +924,6 @@
         <div class="inbox-item-body">${msg.body}</div>
       </div>`;
     });
-    
     inboxBody.innerHTML = html;
   }
 
@@ -907,9 +940,8 @@
   function openMessage(msgId) {
     const msg = messages.find(m => m.id === msgId);
     if (!msg) return;
-    
     const msgBody = document.getElementById('msg-body');
-    let html = `
+    msgBody.innerHTML = `
       <button class="msg-back" onclick="renderInboxMessages()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>Back to inbox</button>
       <div class="msg-title">${msg.title}</div>
       <div class="msg-meta-row">
@@ -920,7 +952,6 @@
       <button class="msg-mark-btn" onclick="toggleReadStatus(${msg.id})">${msg.read ? 'Mark as Unread' : 'Mark as Read'}</button>
       <div class="msg-content">${msg.body}</div>
     `;
-    msgBody.innerHTML = html;
     document.getElementById('message-detail').classList.add('open');
   }
 
@@ -941,7 +972,6 @@
     const unreadCount = messages.filter(m => !m.read).length;
     const badge = document.getElementById('notif-badge');
     const label = document.getElementById('unread-count-label');
-    
     if (unreadCount > 0) {
       badge.textContent = unreadCount;
       badge.style.display = 'flex';
@@ -951,47 +981,34 @@
     label.textContent = unreadCount > 0 ? `${unreadCount} unread message${unreadCount !== 1 ? 's' : ''}` : 'No unread messages';
   }
 
-  function markAllRead() {
-    messages.forEach(m => m.read = true);
-    updateUnreadCount();
-    renderInboxMessages();
-  }
-
-  function markAllUnread() {
-    messages.forEach(m => m.read = false);
-    updateUnreadCount();
-    renderInboxMessages();
-  }
-
+  function markAllRead() { messages.forEach(m => m.read = true); updateUnreadCount(); renderInboxMessages(); }
+  function markAllUnread() { messages.forEach(m => m.read = false); updateUnreadCount(); renderInboxMessages(); }
   function toggleUnreadOnly() {
-    const btn = document.getElementById('unread-only-btn');
-    btn.classList.toggle('active-filter');
+    document.getElementById('unread-only-btn').classList.toggle('active-filter');
     renderInboxMessages();
   }
 
-  // Close inbox when clicking backdrop
   document.addEventListener('click', function(e) {
     const inboxPanel = document.getElementById('inbox-panel');
-    if (inboxPanel.classList.contains('open') && 
-        !inboxPanel.contains(e.target) && 
+    if (inboxPanel.classList.contains('open') &&
+        !inboxPanel.contains(e.target) &&
         !document.getElementById('notif-btn').contains(e.target)) {
       closeInbox();
     }
   });
 
-  // STATUS UPDATE MODAL
+  // ── STATUS MODAL ──
   let currentStatusUpdate = { jobOrderId: null, jobTitle: null, newStatus: null };
 
   function openStatusModal(jobOrderId, jobTitle, button) {
     currentStatusUpdate = { jobOrderId, jobTitle, newStatus: null };
     document.getElementById('status-modal-subtitle').textContent = `${jobOrderId} - ${jobTitle}`;
     document.getElementById('status-modal').classList.add('open');
-    
-    // Reset status options
     document.querySelectorAll('.status-option').forEach(opt => opt.classList.remove('selected'));
-    document.getElementById('update-status-btn').disabled = true;
-    document.getElementById('update-status-btn').style.opacity = '0.5';
-    document.getElementById('update-status-btn').style.cursor = 'not-allowed';
+    const btn = document.getElementById('update-status-btn');
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+    btn.style.cursor = 'not-allowed';
   }
 
   function closeStatusModal() {
@@ -999,30 +1016,24 @@
     currentStatusUpdate = { jobOrderId: null, jobTitle: null, newStatus: null };
   }
 
-  function selectStatus(element, status, color) {
-    // Remove previous selection
+  function selectStatus(element, status) {
     document.querySelectorAll('.status-option').forEach(opt => opt.classList.remove('selected'));
-    
-    // Add selection to current
     element.classList.add('selected');
     currentStatusUpdate.newStatus = status;
-    
-    // Enable update button
-    document.getElementById('update-status-btn').disabled = false;
-    document.getElementById('update-status-btn').style.opacity = '1';
-    document.getElementById('update-status-btn').style.cursor = 'pointer';
+    const btn = document.getElementById('update-status-btn');
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
   }
 
   function updateMaterialStatus() {
     if (!currentStatusUpdate.newStatus) return;
-
     const statusClassMap = {
       Pending: 'status-pending',
       Approved: 'status-approved',
       Processing: 'status-processing',
       Completed: 'status-completed'
     };
-
     const card = document.querySelector(`.request-card[data-job-order-id="${currentStatusUpdate.jobOrderId}"]`);
     if (card) {
       const badge = card.querySelector('.status-badge');
@@ -1032,10 +1043,9 @@
         badge.classList.add(statusClassMap[currentStatusUpdate.newStatus] || 'status-pending');
       }
     }
-
     closeStatusModal();
     sortRequestGroups();
-    if (!document.getElementById('table-view')?.classList.contains('hidden')) {
+    if (!document.getElementById('table-view').classList.contains('hidden')) {
       buildRequestTable();
     }
   }
@@ -1055,24 +1065,33 @@
     });
   }
 
+  // ── TABLE VIEW — reads clean data from data-* attributes ──
   function buildRequestTable() {
     const tbody = document.getElementById('request-table-body');
     if (!tbody) return;
     tbody.innerHTML = '';
+
+    const statusClassMap = {
+      Pending: 'status-pending',
+      Approved: 'status-approved',
+      Processing: 'status-processing',
+      Completed: 'status-completed'
+    };
+
     document.querySelectorAll('#cards-view .request-card').forEach(card => {
-      const id = card.dataset.jobOrderId || '';
-      const title = card.querySelector('.card-title')?.textContent.trim() || '';
-      const fields = card.querySelectorAll('.card-grid .card-field span');
-      const itemCode = fields[0]?.textContent.trim() || '';
-      const quantity = fields[1]?.textContent.trim() || '';
-      const vehicle = fields[2]?.textContent.trim() || '';
-      const requestedBy = fields[3]?.textContent.trim() || '';
-      const purposeClean = card.querySelector('.card-purpose')?.textContent.replace('Purpose', '').trim() || '';
-      const requested = card.querySelector('.card-meta span:nth-child(2)')?.textContent.trim() || '';
-      const required = card.querySelector('.card-meta span:nth-child(3)')?.textContent.trim() || '';
+      // Pull clean values straight from data attributes
+      const title     = card.dataset.title      || '';
+      const itemCode  = card.dataset.itemCode   || '';
+      const vehicle   = card.dataset.vehicle    || '';
+      const quantity  = card.dataset.quantity   || '';
+      const requested = card.dataset.requested  || '';
+      const required  = card.dataset.required   || '';
+
+      // Status is live on the badge (may have been updated)
       const status = card.querySelector('.status-badge')?.textContent.trim() || '';
 
       const row = document.createElement('tr');
+
       [title, itemCode, vehicle, quantity, requested, required].forEach(value => {
         const cell = document.createElement('td');
         cell.textContent = value;
@@ -1081,7 +1100,7 @@
 
       const statusCell = document.createElement('td');
       const statusBadge = document.createElement('span');
-      statusBadge.className = `status-badge ${status === 'Approved' ? 'status-approved' : status === 'Processing' ? 'status-processing' : status === 'Completed' ? 'status-completed' : 'status-pending'}`;
+      statusBadge.className = `status-badge ${statusClassMap[status] || 'status-pending'}`;
       statusBadge.textContent = status;
       statusCell.appendChild(statusBadge);
       row.appendChild(statusCell);
@@ -1098,11 +1117,11 @@
     if (view === 'table') buildRequestTable();
   }
 
-  document.getElementById('status-modal')?.addEventListener('click', function(e) {
+  document.getElementById('status-modal').addEventListener('click', function(e) {
     if (e.target === this) closeStatusModal();
   });
 
-  // Initialize
+  // ── INIT ──
   updateUnreadCount();
   sortRequestGroups();
 </script>
