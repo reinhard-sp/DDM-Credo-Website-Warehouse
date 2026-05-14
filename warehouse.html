@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Warehouse Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -26,7 +27,7 @@
       --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
     }
 
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif; background: linear-gradient(135deg, #f6fef4 0%, #eff9f5 100%); color: var(--text); min-height: 100vh; letter-spacing: -0.01em; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif; background: radial-gradient(circle at top left, rgba(37,99,235,.08), transparent 36%), radial-gradient(circle at 85% 20%, rgba(14,165,233,.08), transparent 32%), radial-gradient(circle at 24% 78%, rgba(16,185,129,.07), transparent 36%), linear-gradient(180deg, #f4fbfa 0%, #f8fcfb 55%, #f1f8f5 100%); background-attachment: fixed; color: var(--text); min-height: 100vh; letter-spacing: -0.01em; }
 
     /* LOGIN */
     #login-page {
@@ -114,22 +115,24 @@
     .login-error { color: var(--red); font-size: 13px; margin-bottom: 10px; display: none; }
 
     /* DASHBOARD */
-    #dashboard-page { display: none; }
+    #dashboard-page { display: none; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif; }
 
     .header {
-      background: var(--white); border-bottom: 1px solid var(--border); box-shadow: var(--shadow);
-      padding: 0 32px; height: 72px; display: flex; align-items: center;
+      background: rgba(255,255,255,.62); border-bottom: 1px solid rgba(209,213,219,.7);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      padding: 12px 16px; height: 65px; display: flex; align-items: center;
       justify-content: space-between; position: sticky; top: 0; z-index: 100;
     }
     .header-left { display: flex; align-items: center; gap: 12px; }
     .header-logo {
-      width: 48px; height: 48px; background: linear-gradient(135deg, var(--green), var(--green-dark)); border-radius: 12px;
-      display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+      width: 40px; height: 40px; background: var(--green); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; box-shadow: none;
     }
     .header-logo svg { width: 20px; height: 20px; fill: white; }
     .header-logo img { width: 100%; height: 100%; object-fit: contain; border-radius: inherit; }
-    .header-title h2 { font-size: 16px; font-weight: 700; }
-    .header-title p { font-size: 12px; color: var(--text-muted); }
+    .header-title h2 { font-size: 16px; font-weight: 700; color: #111; line-height: 1.2; }
+    .header-title p { font-size: 12px; color: #888; }
     .header-right { display: flex; align-items: center; gap: 20px; }
     .notif-btn { position: relative; background: none; border: none; cursor: pointer; padding: 8px 12px; border-radius: 10px; transition: all 0.3s ease; }
     .notif-btn:hover { background: rgba(59, 130, 246, 0.1); }
@@ -159,28 +162,28 @@
       align-items: center;
       gap: 4px;
       padding: 4px;
-      height: 40px;
       background: var(--white);
-      border: 1px solid var(--border);
+      border: 1.5px solid #b7e4d1;
       border-radius: 10px;
-      box-shadow: var(--shadow);
     }
     .view-toggle-btn {
       position: relative;
-      width: 40px;
-      height: 32px;
-      border: none;
-      border-radius: 8px;
-      background: transparent;
-      color: #475569;
-      cursor: pointer;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      transition: all .2s ease;
+      width: 44px;
+      height: 36px;
+      padding: 0;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      color: #2f4f46;
+      cursor: pointer;
+      transition: background .15s, color .15s, box-shadow .15s;
+      font-family: 'Inter', sans-serif;
     }
-    .view-toggle-btn:hover { background: #f1f5f9; }
-    .view-toggle-btn.active { background: var(--blue); color: #fff; box-shadow: 0 6px 14px rgba(59,130,246,.25); }
+    .view-toggle-btn:hover { background: #ecfdf5; color: var(--green-dark); }
+    .view-toggle-btn.active { background: linear-gradient(135deg, var(--green), var(--green-dark)); color: #fff; box-shadow: 0 4px 10px rgba(16,185,129,.24); }
     .view-toggle-btn svg { width: 18px; height: 18px; }
     .view-toggle-btn::after {
       content: attr(data-label);
@@ -206,23 +209,21 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 3px 10px;
-      height: 40px;
+      padding: 10px 12px;
       background: var(--white);
-      border: 1px solid var(--border);
+      border: 1.5px solid #b7e4d1;
       border-radius: 10px;
-      box-shadow: var(--shadow);
     }
-    .sort-label { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 32px; border: none; border-radius: 8px; background: #f8fafc; color: #475569; cursor: pointer; }
-    .sort-label:hover { background: #f1f5f9; }
+    .sort-label { display: inline-flex; align-items: center; justify-content: center; border: none; background: transparent; color: #2f4f46; cursor: pointer; font-family: 'Inter', sans-serif; }
+    .sort-label:hover { background: transparent; }
     .sort-label svg { width: 16px; height: 16px; }
-    .sort-select { border: none; background: transparent; color: #0f172a; font-size: 13px; font-weight: 600; outline: none; min-width: 142px; cursor: pointer; }
+    .sort-select { border: none; background: transparent; color: #0f3d2e; font-size: 13px; font-weight: 600; outline: none; min-width: 132px; cursor: pointer; font-family: 'Inter', sans-serif; }
     .filter-btn {
-      display: flex; align-items: center; gap: 8px; height: 40px; background: var(--white);
-      border: 1px solid var(--border); border-radius: 10px; padding: 0 16px;
-      font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.3s ease; box-shadow: var(--shadow);
+      display: flex; align-items: center; gap: 7px; height: 38px; background: var(--white);
+      border: 1px solid #b7e4d1; border-radius: 10px; padding: 10px 20px;
+      font-size: 14px; font-weight: 500; color: #0f3d2e; cursor: pointer; white-space: nowrap; transition: all 0.15s ease; font-family: 'Inter', sans-serif;
     }
-    .filter-btn:hover { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
+    .filter-btn:hover { background: #ecfdf5; border-color: var(--green); color: var(--green-dark); }
 
     .section-header {
       display: flex; align-items: center; gap: 8px;
@@ -337,14 +338,14 @@
     .date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .date-field label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
     .date-input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; }
-    .toggle-group { display: flex; flex-wrap: wrap; gap: 10px; }
-    .toggle-btn { padding: 10px 24px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; background: white; transition: all 0.3s ease; }
-    .toggle-btn.active { background: var(--blue-light); border-color: var(--blue); color: var(--blue); box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2); }
+    .toggle-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+    .toggle-group .toggle-btn { width: 100%; box-sizing: border-box; padding: 9px 18px; background: #fff; border: 1.5px solid #e5e7eb; border-radius: 9px; font-size: 14px; font-weight: 500; cursor: pointer; color: #333; font-family: 'Inter', sans-serif; transition: all .15s; }
+    .toggle-btn.active { border-color: #86efac; background: #dcfce7; color: var(--green-dark); box-shadow: 0 2px 8px rgba(34,197,94,0.18); }
     .modal-footer { padding: 20px 28px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 12px; background: #fafafa; flex-shrink: 0; }
-    .btn-reset { padding: 12px 28px; background: white; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; color: var(--text); transition: all 0.2s; }
-    .btn-reset:hover { background: #f5f5f5; border-color: #999; }
-    .btn-apply { padding: 12px 32px; background: linear-gradient(135deg, var(--blue), #1d4ed8); color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
-    .btn-apply:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4); }
+    .btn-reset { padding: 9px 18px; background: #fff; border: 1px solid #bbf7d0; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; color: var(--green-dark); transition: background .15s; font-family: 'Inter', sans-serif; }
+    .btn-reset:hover { background: #f0fdf4; border-color: var(--green); }
+    .btn-apply { padding: 10px 22px; background: linear-gradient(135deg, var(--green), var(--green-dark)); color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: transform .2s, box-shadow .2s; box-shadow: 0 4px 12px rgba(16,185,129,.3); font-family: 'Inter', sans-serif; }
+    .btn-apply:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(16,185,129,.4); }
     .btn-apply:disabled { background: #ccc; cursor: not-allowed; opacity: 0.6; }
 
     /* STATUS UPDATE MODAL */
@@ -450,7 +451,7 @@
     /* ── INBOX PANEL ── */
     .inbox-panel {
       position: fixed; top: 0; right: 0; width: 440px; height: 100vh;
-      background: var(--white); box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+      background: var(--white); box-shadow: none;
       z-index: 300; display: flex; flex-direction: column;
       transform: translateX(100%); transition: transform 0.3s ease;
     }
@@ -522,7 +523,7 @@
     /* MESSAGE DETAIL VIEW */
     .message-detail {
       position: fixed; top: 0; right: 0; width: 440px; height: 100vh;
-      background: var(--white); box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+      background: var(--white); box-shadow: none;
       z-index: 301; display: flex; flex-direction: column;
       transform: translateX(100%); transition: transform 0.3s ease;
     }
@@ -563,11 +564,18 @@
       .page-actions { justify-content: flex-start; }
     }
     @media (max-width: 740px) {
+      .header { padding: 10px 12px; height: auto; min-height: 60px; }
+      .header-left { gap: 10px; min-width: 0; }
+      .header-title h2 { font-size: 15px; }
+      .header-title p { font-size: 11px; }
+      .header-right { gap: 8px; }
+      .notif-btn, .logout-btn { padding: 8px; }
       .page-actions { width: 100%; }
-      .view-toggle { width: 100%; justify-content: space-between; }
-      .view-toggle-btn { flex: 1 1 0; }
-      .sort-control { width: 100%; }
-      .sort-select { width: 100%; min-width: 0; }
+    }
+    @media (max-width: 560px) {
+      .header-title p { display: none; }
+      .logout-btn { font-size: 0; }
+      .logout-btn svg { margin: 0; }
     }
   </style>
 </head>
@@ -641,10 +649,10 @@
       <div class="page-actions">
         <div class="view-toggle" role="tablist" aria-label="Dashboard view toggle">
           <button class="view-toggle-btn active" id="view-toggle-cards" data-label="Cards" title="Cards" aria-label="Cards view" onclick="setDashboardView('cards')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="9" y1="4" x2="9" y2="20"/><line x1="15" y1="4" x2="15" y2="20"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="7" rx="1.5"/><rect x="14" y="4" width="7" height="7" rx="1.5"/><rect x="3" y="15" width="7" height="5" rx="1.5"/><rect x="14" y="15" width="7" height="5" rx="1.5"/></svg>
           </button>
           <button class="view-toggle-btn" id="view-toggle-table" data-label="Table" title="Table" aria-label="Table view" onclick="setDashboardView('table')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="10" x2="8" y2="20"/><line x1="14" y1="10" x2="14" y2="20"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="9" y1="4" x2="9" y2="20"/><line x1="15" y1="4" x2="15" y2="20"/></svg>
           </button>
         </div>
         <div class="sort-control">
