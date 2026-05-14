@@ -12,7 +12,10 @@
       --green-dark: #059669;
       --red: #ef4444;
       --blue: #3b82f6;
+      --blue-dark: #2563eb;
       --blue-light: #dbeafe;
+      --yellow: #facc15;
+      --yellow-dark: #a16207;
       --yellow-light: #fef3c7;
       --gray-bg: #f8fafc;
       --white: #ffffff;
@@ -23,13 +26,17 @@
       --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
     }
 
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif; background: linear-gradient(135deg, #dce8f5 0%, #c8dff2 50%, #d8e9f7 100%); color: var(--text); min-height: 100vh; letter-spacing: -0.01em; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif; background: linear-gradient(135deg, #f6fef4 0%, #eff9f5 100%); color: var(--text); min-height: 100vh; letter-spacing: -0.01em; }
 
     /* LOGIN */
     #login-page {
       display: flex; align-items: center; justify-content: center;
       min-height: 100vh;
-      background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+      background:
+        radial-gradient(circle at 18% 18%, rgba(59,130,246,.16), transparent 26%),
+        radial-gradient(circle at 82% 12%, rgba(14,165,233,.14), transparent 24%),
+        radial-gradient(circle at 75% 82%, rgba(37,99,235,.10), transparent 28%),
+        linear-gradient(135deg, #eef5fd 0%, #dfeaf8 48%, #e9f3fb 100%);
       position: relative;
       overflow: hidden;
     }
@@ -52,50 +59,50 @@
     }
     .splash-screen {
       position: fixed; inset: 0; z-index: 20;
-      background: linear-gradient(135deg, #dce8f5 0%, #c8dff2 50%, #d8e9f7 100%);
+      background:
+        radial-gradient(circle at 18% 18%, rgba(59,130,246,.16), transparent 26%),
+        radial-gradient(circle at 82% 12%, rgba(14,165,233,.14), transparent 24%),
+        radial-gradient(circle at 75% 82%, rgba(37,99,235,.10), transparent 28%),
+        linear-gradient(135deg, #eef5fd 0%, #dfeaf8 48%, #e9f3fb 100%);
       display: flex; align-items: center; justify-content: center;
       transition: opacity .55s ease, visibility .55s ease;
     }
     .splash-screen-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-    .splash-brand { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; animation: splashIntro .7s cubic-bezier(.2,.8,.2,1); }
+    .splash-brand { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; animation: splashPop .85s cubic-bezier(.22,1,.36,1); }
+    @keyframes splashPop { from { opacity: 0; transform: translateY(12px) scale(1.04); } to { opacity: 1; transform: translateY(0) scale(1); } }
     .splash-logo {
-      width: 76px; height: 76px; background: rgba(255,255,255,.92); border: 1px solid rgba(16,185,129,.18);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 22px rgba(16,185,129,.14);
-      padding: 10px; overflow: hidden; animation: splashLogo .7s cubic-bezier(.2,.8,.2,1);
+      width: 76px; height: 76px; background: rgba(255,255,255,.92); border: 1px solid rgba(59,130,246,.18);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 28px rgba(37,99,235,.12);
+      padding: 10px; overflow: hidden; animation: splashLogo .85s cubic-bezier(.22,1,.36,1);
     }
     .splash-logo img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; transform: scale(.96); }
-    .splash-title { font-size: 28px; font-weight: 800; letter-spacing: .05em; color: #111; margin-left: .05em; white-space: nowrap; line-height: 1.12; animation: splashTitle .7s cubic-bezier(.2,.8,.2,1) .04s both; }
-    .splash-subtitle { font-size: 13px; color: #4b5563; letter-spacing: .08em; animation: splashSub .7s cubic-bezier(.2,.8,.2,1) .08s both; }
-    @keyframes splashIntro { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes splashLogo { from { opacity: 0; transform: translateY(6px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
-    @keyframes splashTitle { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes splashSub { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .splash-title { font-size: 30px; font-weight: 800; letter-spacing: .08em; color: #111; margin-left: .08em; white-space: nowrap; line-height: 1.12; animation: splashTitle .85s cubic-bezier(.22,1,.36,1); }
+    .splash-subtitle { font-size: 13px; color: #4b5563; letter-spacing: .06em; text-transform: none; animation: splashSub .85s cubic-bezier(.22,1,.36,1); }
+    @keyframes splashLogo { from { opacity: 0; transform: translateY(8px) scale(.92); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes splashTitle { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes splashSub { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
     .login-card {
-      background: var(--white); border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-      padding: 48px 52px 44px; width: 440px; text-align: center; backdrop-filter: blur(10px);
-      opacity: 1; transform: translateY(0); transition: opacity .5s ease, transform .5s ease;
+      background: #fff; border-radius: 16px; padding: 48px; width: 100%; max-width: 460px; box-shadow: 0 4px 32px rgba(0,0,0,.08); display: flex; flex-direction: column; align-items: center;
+      opacity: 1; transform: translateY(0); transition: opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1);
     }
-    .login-card-hidden { opacity: 0; transform: translateY(12px) scale(.99); }
+    .login-card-hidden { opacity: 0; transform: translateY(20px) scale(.985); }
     .login-card-visible { opacity: 1; transform: translateY(0) scale(1); }
     .login-icon {
-      width: 64px; height: 64px; background: linear-gradient(135deg, var(--green), var(--green-dark)); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);
+      width: 64px; height: 64px; background: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
     }
     .login-icon svg { width: 28px; height: 28px; fill: white; }
     .login-icon img { width: 100%; height: 100%; object-fit: contain; border-radius: inherit; }
-    .login-card h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
-    .login-card > p { color: var(--text-muted); font-size: 14px; margin-bottom: 28px; }
+    .login-title { font-size: 22px; font-weight: 700; color: #111; margin-bottom: 8px; text-align: center; }
+    .login-subtitle { font-size: 14px; color: #888; margin-bottom: 28px; text-align: center; }
     .form-label { display: block; text-align: left; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
     .form-input {
-      width: 100%; padding: 13px 16px; border: none; background: #f0f0f0;
-      border-radius: 8px; font-size: 14px; color: var(--text); margin-bottom: 16px; outline: none;
+      width: 100%; padding: 13px 16px; border: none; background: #f0f0f0; border-radius: 8px; font-size: 14px; color: var(--text); margin-bottom: 16px; outline: none;
     }
     .form-input:focus { background: #e8e8e8; }
     .btn-login {
-      width: 100%; padding: 14px; background: linear-gradient(135deg, var(--green), var(--green-dark)); color: white; border: none;
-      border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; margin-bottom: 16px; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      width: 100%; padding: 14px; background: linear-gradient(135deg, var(--green), var(--green-dark)); color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; margin-bottom: 16px; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(16,185,129,.22);
     }
-    .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4); }
+    .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(16,185,129,.30); }
     .login-hint { color: var(--text-muted); font-size: 13px; }
     .login-error { color: var(--red); font-size: 13px; margin-bottom: 10px; display: none; }
 
@@ -215,7 +222,8 @@
       font-size: 16px; font-weight: 700; margin-bottom: 16px;
     }
     .section-header.urgent { color: var(--red); }
-    .section-header.standard { color: var(--blue); }
+    .section-header.medium { color: var(--yellow-dark); }
+    .section-header.low { color: var(--blue-dark); }
     .section-header svg { width: 20px; height: 20px; }
 
     .request-card {
@@ -231,7 +239,13 @@
 
     .card-title-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
     .card-title { font-size: 17px; font-weight: 700; }
-    .badge { padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }\n    .badge-urgent { background: #ffe0e0; color: var(--red); }\n    .badge-doable { background: #f3f4f6; color: #6b7280; border: 1px solid #d1d5db; }
+    .badge { padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .badge-urgent { background: #ffe0e0; color: var(--red); }
+    .badge-medium { background: #fef9c3; color: var(--yellow-dark); border: 1px solid #fde68a; }
+    .badge-low { background: var(--blue-light); color: var(--blue-dark); border: 1px solid #93c5fd; }
+
+    /* Hide badges in card view since cards are grouped by section */
+    .request-card .badge { display: none; }
 
     .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; margin-bottom: 14px; }
     .card-field label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 3px; }
@@ -266,8 +280,22 @@
     .dashboard-table th { font-size: 12px; color: var(--text-muted); font-weight: 700; letter-spacing: .04em; text-transform: uppercase; background: #f8fafc; }
     .dashboard-table td { color: #1f2937; }
     .dashboard-table tr:hover td { background: #f9fbff; }
-    .table-priority-urgent { color: #b91c1c; font-weight: 700; }
-    .table-priority-standard { color: #475569; font-weight: 600; }
+    .table-priority-urgent,
+    .table-priority-medium,
+    .table-priority-low {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+    .table-priority-urgent { color: var(--red); background: #ffe0e0; border-color: #fecaca; }
+    .table-priority-medium { color: var(--yellow-dark); background: #fef9c3; border-color: #fde68a; }
+    .table-priority-low { color: var(--blue-dark); background: var(--blue-light); border-color: #93c5fd; }
     .status-chip { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 999px; border: 1px solid transparent; font-size: 12px; font-weight: 700; }
     .status-chip-btn {
       border: none;
@@ -546,19 +574,21 @@
         <img src="logo-vtlc.jpg" alt="VTLC Logo" />
       </div>
       <h1 class="splash-title">Vicente T. Lao Construction</h1>
-      <p class="splash-subtitle">Warehouse Management System</p>
+      <p class="splash-subtitle">RequiSite</p>
     </div>
   </div>
   <div class="login-card login-card-hidden" id="login-card">
     <div class="login-icon">
       <img src="logo-vtlc.jpg" alt="VTLC Logo" />
     </div>
-    <h1>Warehouse Management System</h1>
-    <p>Enter password to access dashboard</p>
-    <div id="login-error" class="login-error">Incorrect password. Try again.</div>
-    <label class="form-label" for="pw-input">Password</label>
-    <input id="pw-input" class="form-input" type="password" placeholder="Enter password" />
-    <button class="btn-login" onclick="doLogin()">Login</button>
+    <h1 class="login-title">RequiSite</h1>
+    <p class="login-subtitle">Motorpool-Warehouse Material Requisition System</p>
+    <div class="login-form">
+      <label class="form-label">Password</label>
+      <input id="pw-input" class="form-input" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()" />
+      <div id="login-error" class="login-error hidden">Incorrect password. Try again.</div>
+      <button class="btn-login" onclick="doLogin()">Login</button>
+    </div>
     <div class="login-hint">Demo password: warehouse123</div>
   </div>
 </div>
@@ -640,7 +670,6 @@
       <div class="card-main">
         <div class="card-title-row">
           <span class="card-title">Synthetic Engine Oil 5W-30</span>
-          <span class="badge badge-urgent">High</span>
         </div>
         <div class="card-grid">
           <div class="card-field"><label>Item Code</label><span>OIL-5W30-SYN</span></div>
@@ -666,7 +695,6 @@
       <div class="card-main">
         <div class="card-title-row">
           <span class="card-title">Brake Pads - Premium Grade</span>
-          <span class="badge badge-urgent">High</span>
         </div>
         <div class="card-grid">
           <div class="card-field"><label>Item Code</label><span>BRK-PAD-IDM-2026</span></div>
@@ -692,7 +720,6 @@
       <div class="card-main">
         <div class="card-title-row">
           <span class="card-title">Heavy-Duty Vehicle Battery 12V 100Ah</span>
-          <span class="badge badge-urgent">High</span>
         </div>
         <div class="card-grid">
           <div class="card-field"><label>Item Code</label><span>BAT-100-12V</span></div>
@@ -715,7 +742,7 @@
     </div>
 
     <!-- MEDIUM PRIORITY -->
-    <div class="section-header standard" id="standard-section-header" style="margin-top:8px;">
+    <div class="section-header medium" id="standard-section-header" style="margin-top:8px;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <rect x="3" y="3" width="18" height="18" rx="2"/>
         <line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/>
@@ -728,7 +755,6 @@
       <div class="card-main">
         <div class="card-title-row">
           <span class="card-title">Tire Balancing Weights</span>
-          <span class="badge badge-doable">Medium</span>
         </div>
         <div class="card-grid">
           <div class="card-field"><label>Item Code</label><span>TIRE-BAL-WEIGHT</span></div>
@@ -754,7 +780,6 @@
       <div class="card-main">
         <div class="card-title-row">
           <span class="card-title">AC System Parts (Pending Diagnostic)</span>
-          <span class="badge badge-doable">Medium</span>
         </div>
         <div class="card-grid">
           <div class="card-field"><label>Item Code</label><span>AC-PARTS-TBD</span></div>
@@ -789,7 +814,6 @@
       <div class="card-main">
         <div class="card-title-row">
           <span class="card-title">Cabin Air Filter</span>
-          <span class="badge badge-doable">Low</span>
         </div>
         <div class="card-grid">
           <div class="card-field"><label>Item Code</label><span>AIR-FLTR-CLB-2026</span></div>
@@ -826,25 +850,29 @@
             </tr>
           </thead>
           <tbody id="dashboard-table-body">
-            <tr data-job-order-id="MR-2026-001" data-priority="urgent">
-              <td>MR-2026-001</td><td>Synthetic Engine Oil 5W-30</td><td class="table-priority-urgent">Urgent</td><td>Toyota Hilux - ABC 1234</td><td>Apr 28, 2026</td><td>May 1, 2026</td>
+            <tr data-job-order-id="MR-2026-001" data-priority="high">
+              <td>MR-2026-001</td><td>Synthetic Engine Oil 5W-30</td><td><span class="table-priority-urgent">High</span></td><td>Toyota Hilux - ABC 1234</td><td>Apr 28, 2026</td><td>May 1, 2026</td>
               <td><button class="status-chip-btn" onclick="openStatusModal('MR-2026-001', 'Engine Oil Change', this)"><span class="status-chip status-MaterialsOutOfStock">Materials Out-of-Stock</span></button></td>
             </tr>
-            <tr data-job-order-id="MR-2026-002" data-priority="urgent">
-              <td>MR-2026-002</td><td>Brake Pads - Premium Grade</td><td class="table-priority-urgent">Urgent</td><td>Isuzu D-Max - XYZ 5678</td><td>Apr 27, 2026</td><td>Apr 30, 2026</td>
+            <tr data-job-order-id="MR-2026-002" data-priority="high">
+              <td>MR-2026-002</td><td>Brake Pads - Premium Grade</td><td><span class="table-priority-urgent">High</span></td><td>Isuzu D-Max - XYZ 5678</td><td>Apr 27, 2026</td><td>Apr 30, 2026</td>
               <td><button class="status-chip-btn" onclick="openStatusModal('MR-2026-002', 'Brake Pads', this)"><span class="status-chip status-OrderingMaterials">Ordering Materials</span></button></td>
             </tr>
-            <tr data-job-order-id="MR-2026-004" data-priority="urgent">
-              <td>MR-2026-004</td><td>Heavy-Duty Vehicle Battery 12V 100Ah</td><td class="table-priority-urgent">Urgent</td><td>Nissan Navara - JKL 7890</td><td>Apr 25, 2026</td><td>Apr 28, 2026</td>
+            <tr data-job-order-id="MR-2026-004" data-priority="high">
+              <td>MR-2026-004</td><td>Heavy-Duty Vehicle Battery 12V 100Ah</td><td><span class="table-priority-urgent">High</span></td><td>Nissan Navara - JKL 7890</td><td>Apr 25, 2026</td><td>Apr 28, 2026</td>
               <td><button class="status-chip-btn" onclick="openStatusModal('MR-2026-004', 'Battery', this)"><span class="status-chip status-OrderingMaterials">Ordering Materials</span></button></td>
             </tr>
-            <tr data-job-order-id="MR-2026-003" data-priority="standard">
-              <td>MR-2026-003</td><td>Tire Balancing Weights</td><td class="table-priority-standard">Standard</td><td>Mitsubishi L300 - DEF 9012</td><td>Apr 26, 2026</td><td>May 3, 2026</td>
+            <tr data-job-order-id="MR-2026-003" data-priority="medium">
+              <td>MR-2026-003</td><td>Tire Balancing Weights</td><td><span class="table-priority-medium">Medium</span></td><td>Mitsubishi L300 - DEF 9012</td><td>Apr 26, 2026</td><td>May 3, 2026</td>
               <td><button class="status-chip-btn" onclick="openStatusModal('MR-2026-003', 'Tire Weights', this)"><span class="status-chip status-MaterialInStock">Material In-Stock</span></button></td>
             </tr>
-            <tr data-job-order-id="MR-2026-005" data-priority="standard">
-              <td>MR-2026-005</td><td>AC System Parts (Pending Diagnostic)</td><td class="table-priority-standard">Standard</td><td>Ford Ranger - GHI 3456</td><td>Apr 24, 2026</td><td>May 10, 2026</td>
+            <tr data-job-order-id="MR-2026-005" data-priority="medium">
+              <td>MR-2026-005</td><td>AC System Parts (Pending Diagnostic)</td><td><span class="table-priority-medium">Medium</span></td><td>Ford Ranger - GHI 3456</td><td>Apr 24, 2026</td><td>May 10, 2026</td>
               <td><button class="status-chip-btn" onclick="openStatusModal('MR-2026-005', 'AC System', this)"><span class="status-chip status-InProcess">In Process</span></button></td>
+            </tr>
+            <tr data-job-order-id="MR-2026-006" data-priority="low">
+              <td>MR-2026-006</td><td>Cabin Air Filter</td><td><span class="table-priority-low">Low</span></td><td>Mitsubishi L300 - DEF 9012</td><td>Apr 23, 2026</td><td>May 12, 2026</td>
+              <td><button class="status-chip-btn" onclick="openStatusModal('MR-2026-006', 'Cabin Air Filter', this)"><span class="status-chip status-MaterialInStock">Material In-Stock</span></button></td>
             </tr>
           </tbody>
         </table>
@@ -904,8 +932,9 @@
         <h4>Priority Level</h4>
         <div class="toggle-group" id="priority-group">
           <button class="toggle-btn active" onclick="toggle(this,'priority-group')">All</button>
-          <button class="toggle-btn" onclick="toggle(this,'priority-group')">Urgent</button>
-          <button class="toggle-btn" onclick="toggle(this,'priority-group')">Standard</button>
+          <button class="toggle-btn" onclick="toggle(this,'priority-group')">High</button>
+          <button class="toggle-btn" onclick="toggle(this,'priority-group')">Medium</button>
+          <button class="toggle-btn" onclick="toggle(this,'priority-group')">Low</button>
         </div>
       </div>
       <div class="filter-section">
@@ -1067,13 +1096,20 @@
   }
 
   function applyDashboardSort() {
-    const standardHeader = document.getElementById('standard-section-header');
-    if (!standardHeader) return;
-    sortCardGroup('.request-card.urgent-card', standardHeader);
-    const standardCards = Array.from(document.querySelectorAll('.request-card:not(.urgent-card)'));
-    standardCards.sort((a, b) => compareCardValues(getCardSortValue(a, dashboardSort), getCardSortValue(b, dashboardSort)));
-    const parent = standardHeader.parentElement;
-    standardCards.forEach(card => parent.appendChild(card));
+    const mediumHeader = document.getElementById('standard-section-header');
+    const lowHeader = document.getElementById('low-section-header');
+    if (!mediumHeader || !lowHeader) return;
+
+    sortCardGroup('.request-card.urgent-card', mediumHeader);
+
+    const parent = mediumHeader.parentElement;
+    const mediumCards = Array.from(document.querySelectorAll('.request-card:not(.urgent-card):not([data-job-order-id="MR-2026-006"])'));
+    mediumCards.sort((a, b) => compareCardValues(getCardSortValue(a, dashboardSort), getCardSortValue(b, dashboardSort)));
+    mediumCards.forEach(card => parent.insertBefore(card, lowHeader));
+
+    const lowCards = Array.from(document.querySelectorAll('.request-card[data-job-order-id="MR-2026-006"]'));
+    lowCards.sort((a, b) => compareCardValues(getCardSortValue(a, dashboardSort), getCardSortValue(b, dashboardSort)));
+    lowCards.forEach(card => parent.appendChild(card));
 
     const tableBody = document.getElementById('dashboard-table-body');
     if (tableBody) {
@@ -1087,11 +1123,16 @@
         return new Date(cells[5].textContent.trim()).getTime() || 0;
       };
 
-      const urgent = rows.filter(r => (r.dataset.priority || '').toLowerCase() === 'urgent');
-      const standard = rows.filter(r => (r.dataset.priority || '').toLowerCase() !== 'urgent');
+      const urgent = rows.filter(r => {
+        const priority = (r.dataset.priority || '').toLowerCase();
+        return priority === 'urgent' || priority === 'high';
+      });
+      const medium = rows.filter(r => (r.dataset.priority || '').toLowerCase() === 'medium');
+      const low = rows.filter(r => (r.dataset.priority || '').toLowerCase() === 'low');
       urgent.sort((a, b) => compareCardValues(getRowValue(a, dashboardSort), getRowValue(b, dashboardSort)));
-      standard.sort((a, b) => compareCardValues(getRowValue(a, dashboardSort), getRowValue(b, dashboardSort)));
-      [...urgent, ...standard].forEach(r => tableBody.appendChild(r));
+      medium.sort((a, b) => compareCardValues(getRowValue(a, dashboardSort), getRowValue(b, dashboardSort)));
+      low.sort((a, b) => compareCardValues(getRowValue(a, dashboardSort), getRowValue(b, dashboardSort)));
+      [...urgent, ...medium, ...low].forEach(r => tableBody.appendChild(r));
     }
   }
 
